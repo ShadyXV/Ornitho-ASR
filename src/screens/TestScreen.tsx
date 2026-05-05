@@ -6,6 +6,7 @@ import { RunComposer } from '../components/test/RunComposer';
 import { TestHeader } from '../components/test/TestHeader';
 import type { EnvKey } from '../constants/providerKeys';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
+import { fetchJson } from '../lib/api';
 import { exportFile, runsToCsv } from '../lib/runExports';
 import { routeDescription, routeMode, routeTargetIds, routeTitle } from '../lib/testRoutes';
 import { defaultTargetIds, selectedTargets as getSelectedTargets, targetKey } from '../lib/runTargets';
@@ -38,12 +39,10 @@ export function TestScreen() {
     let ignore = false;
 
     async function loadInitialData() {
-      const [providerResponse, runsResponse] = await Promise.all([
-        fetch('/api/providers'),
-        fetch('/api/runs'),
+      const [providerData, runsData] = await Promise.all([
+        fetchJson<{ providers: ProviderInfo[] }>('/api/providers'),
+        fetchJson<{ runs: RunRecord[] }>('/api/runs'),
       ]);
-      const providerData = await providerResponse.json() as { providers: ProviderInfo[] };
-      const runsData = await runsResponse.json() as { runs: RunRecord[] };
 
       if (!ignore) {
         setProviders(providerData.providers);
@@ -81,19 +80,17 @@ export function TestScreen() {
   const testDescription = routeDescription(location.pathname, providerId, modelId);
 
   async function refreshRuns() {
-    const response = await fetch('/api/runs');
-    const data = await response.json() as { runs: RunRecord[] };
+    const data = await fetchJson<{ runs: RunRecord[] }>('/api/runs');
     setRuns(data.runs);
     setActiveRun(data.runs[0] || null);
   }
 
   async function saveSessionKeys() {
-    const response = await fetch('/api/session-keys', {
+    const data = await fetchJson<{ providers: ProviderInfo[] }>('/api/session-keys', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ keys: sessionKeys }),
     });
-    const data = await response.json() as { providers: ProviderInfo[] };
     setProviders(data.providers);
     setSelectedTargetIds(routeTargetIds(data.providers, location.pathname, providerId, modelId));
     setMessage('Provider status updated for this server session.');
@@ -124,14 +121,10 @@ export function TestScreen() {
     formData.append('tags', tags);
 
     try {
-      const response = await fetch('/api/runs', {
+      const data = await fetchJson<{ run: RunRecord }>('/api/runs', {
         method: 'POST',
         body: formData,
       });
-      const data = await response.json() as { run?: RunRecord; error?: string };
-      if (!response.ok || !data.run) {
-        throw new Error(data.error || 'Benchmark run failed.');
-      }
 
       setActiveRun(data.run);
       await refreshRuns();

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
+import { fetchJson } from '../../lib/api';
 import { formatDate, formatPercent } from '../../lib/formatters';
 import type { ResultRecord, RunRecord } from '../../types';
 
@@ -87,7 +88,7 @@ function ResultRow({ result, onUpdated }: { result: ResultRecord; onUpdated: (re
   const [acceptedTranscript, setAcceptedTranscript] = useState(result.acceptedTranscript);
 
   async function saveGrade() {
-    const response = await fetch(`/api/results/${result.id}/grade`, {
+    const data = await fetchJson<{ result: ResultRecord }>(`/api/results/${result.id}/grade`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -96,10 +97,6 @@ function ResultRow({ result, onUpdated }: { result: ResultRecord; onUpdated: (re
         acceptedTranscript,
       }),
     });
-    const data = await response.json() as { result?: ResultRecord; error?: string };
-    if (!response.ok || !data.result) {
-      throw new Error(data.error || 'Could not save grade.');
-    }
     onUpdated(data.result);
   }
 

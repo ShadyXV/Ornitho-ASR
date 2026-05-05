@@ -5,6 +5,7 @@ import { ProviderLaunchCard } from '../components/dashboard/ProviderLaunchCard';
 import { RecentResults } from '../components/dashboard/RecentResults';
 import { envKeys, type EnvKey } from '../constants/providerKeys';
 import { dummyRecentRuns } from '../data/dummyRecentRuns';
+import { fetchJson } from '../lib/api';
 import { providerTargetCount } from '../lib/providerTargets';
 import type { ProviderInfo } from '../types';
 
@@ -21,8 +22,7 @@ export function DashboardScreen() {
     let ignore = false;
 
     async function loadProviders() {
-      const response = await fetch('/api/providers');
-      const data = await response.json() as { providers: ProviderInfo[] };
+      const data = await fetchJson<{ providers: ProviderInfo[] }>('/api/providers');
       if (!ignore) {
         setProviders(data.providers);
       }
@@ -44,12 +44,11 @@ export function DashboardScreen() {
   const totalTargets = availableProviders.reduce((count, provider) => count + providerTargetCount(provider), 0);
 
   async function saveSessionKeys() {
-    const response = await fetch('/api/session-keys', {
+    const data = await fetchJson<{ providers: ProviderInfo[] }>('/api/session-keys', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ keys: sessionKeys }),
     });
-    const data = await response.json() as { providers: ProviderInfo[] };
     setProviders(data.providers);
     setMessage('Provider status updated for this server session.');
   }
