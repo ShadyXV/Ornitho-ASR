@@ -1,50 +1,61 @@
-import { ASRProviderComponent } from './context/ASRContext';
+import { Bird } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { ResultsFeed } from './components/ResultsFeed';
-import { Mic2 } from 'lucide-react';
+import { useASRTests } from './hooks/useASRTests';
 
 function App() {
+  const { testResults, runTest, isLoading, clearResults, error } = useASRTests();
+
   return (
-    <ASRProviderComponent>
-      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
 
-        {/* Header */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-          <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-indigo-500/20 shadow-lg">
-                <Mic2 className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-700 to-indigo-500 bg-clip-text text-transparent">
-                Ornitho-ASR Lab
-              </h1>
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="bg-indigo-600 p-1.5 rounded-lg">
+              <Bird className="w-6 h-6 text-white" />
             </div>
-            <div className="text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded">
-              v0.1.0-alpha
-            </div>
+            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
+              Bird-ASR Comparison Lab
+            </h1>
           </div>
-        </header>
+          <span className="text-xs font-medium px-2 py-1 bg-slate-100 rounded text-slate-500">
+            v0.2.0-beta
+          </span>
+        </div>
+      </header>
 
-        {/* Main Content */}
-        <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Main Content */}
+      <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
 
-          <section>
-            <Dashboard />
-          </section>
+        {/* Error Toast */}
+        {error && (
+          <div className="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+            <strong className="font-bold">Error: </strong>
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
 
-          <section>
-            <ResultsFeed />
-          </section>
+        {/* Dashboard */}
+        <section>
+          <Dashboard onRunTest={runTest} isProcessing={isLoading} />
+        </section>
 
-        </main>
+        {/* Results Feed */}
+        <section>
+          <ResultsFeed results={testResults} onClear={clearResults} />
+        </section>
 
-        {/* Footer */}
-        <footer className="text-center py-8 text-slate-400 text-sm">
-          <p>© 2024 Ornitho-ASR Lab. Research & Development.</p>
-        </footer>
+      </main>
 
-      </div>
-    </ASRProviderComponent>
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-white mt-12 py-8">
+        <div className="max-w-5xl mx-auto px-6 text-center text-slate-400 text-sm">
+          <p>© 2024 Ornitho-ASR Lab. Research Tool.</p>
+        </div>
+      </footer>
+    </div>
   );
 }
 
