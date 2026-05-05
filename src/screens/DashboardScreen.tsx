@@ -3,8 +3,7 @@ import { BarChart3, FileAudio, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ProviderKeyModal } from '../components/dashboard/ProviderKeyModal';
 import { ProviderKeysSection } from '../components/dashboard/ProviderKeysSection';
-import { ProviderLaunchCard } from '../components/dashboard/ProviderLaunchCard';
-import { RecentResults } from '../components/dashboard/RecentResults';
+import { RecentResultsSummary } from '../components/dashboard/RecentResultsSummary';
 import { SampleList } from '../components/samples/SampleList';
 import { envKeys, type EnvKey } from '../constants/providerKeys';
 import { dummyRecentRuns } from '../data/dummyRecentRuns';
@@ -22,24 +21,34 @@ export function DashboardScreen() {
   const [sessionKeys, setSessionKeys] = useState<Record<EnvKey, string>>(emptySessionKeys);
   const [keyProvider, setKeyProvider] = useState<ProviderInfo | null>(null);
   const [message, setMessage] = useState('');
+  const [samplesMessage, setSamplesMessage] = useState('');
 
   useEffect(() => {
     let ignore = false;
 
-    async function loadDashboard() {
-      const [providerData, sampleData] = await Promise.all([
-        fetchJson<{ providers: ProviderInfo[] }>('/api/providers'),
-        fetchJson<{ samples: SampleRecord[] }>('/api/samples'),
-      ]);
+    async function loadProviders() {
+      const providerData = await fetchJson<{ providers: ProviderInfo[] }>('/api/providers');
       if (!ignore) {
         setProviders(providerData.providers);
+      }
+    }
+
+    async function loadSamples() {
+      const sampleData = await fetchJson<{ samples: SampleRecord[] }>('/api/samples');
+      if (!ignore) {
         setSamples(sampleData.samples);
       }
     }
 
-    void loadDashboard().catch((error: unknown) => {
+    void loadProviders().catch((error: unknown) => {
       if (!ignore) {
         setMessage(error instanceof Error ? error.message : 'Could not load providers.');
+      }
+    });
+
+    void loadSamples().catch(() => {
+      if (!ignore) {
+        setSamplesMessage('Samples are unavailable. Restart the API server to enable the sample library.');
       }
     });
 
@@ -106,20 +115,16 @@ export function DashboardScreen() {
             </div>
           </div>
 
-          <div className="mt-5 grid gap-4 lg:grid-cols-3">
-            {providers.map((provider) => (
-              <ProviderLaunchCard
-                key={provider.id}
-                provider={provider}
-                onConfigureKeys={setKeyProvider}
-              />
-            ))}
-          </div>
         </section>
 
         <ProviderKeysSection providers={providers} onConfigureProvider={setKeyProvider} />
+        {samplesMessage && (
+          <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {samplesMessage}
+          </div>
+        )}
         <SampleList samples={samples} />
-        <RecentResults runs={dummyRecentRuns} />
+        <RecentResultsSummary runs={dummyRecentRuns} />
       </main>
 
       <ProviderKeyModal
