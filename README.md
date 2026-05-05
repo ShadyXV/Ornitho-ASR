@@ -1,48 +1,59 @@
 # Ornitho ASR
 
-Ornitho ASR is a small test app for trying speech-to-text tools with bird names.
+Ornitho ASR is a local benchmark app for testing speech-to-text providers on
+bird names.
 
-The app records audio in the browser, sends it to a local server, and shows the
-transcription result. You can add a comma-separated bird list so each provider
-gets some context for the words you expect.
+The app records or uploads audio, runs the same clip through selected providers
+and methods, scores the output, and lets you add a manual grade.
 
 ## What it does
 
-- Records audio from the browser microphone.
-- Lets you choose one ASR strategy before recording.
-- Sends the recording and bird list to the local API.
-- Shows the returned text, response time, word count, and the saved audio clip.
-- Stores test results in browser local storage until you clear them.
+- Shows which providers are available from local keys.
+- Records audio in the browser or accepts an uploaded audio file.
+- Runs one audio sample against many provider, model, and method combinations.
+- Stores test cases, runs, results, scores, and manual grades in SQLite.
+- Scores transcripts with word error rate, bird-name recall, bird-name
+  precision, matched birds, missed birds, and likely false positives.
+- Exports saved runs as JSON or CSV.
 
-## ASR strategies
+## Providers and methods
 
-The server currently has three strategies:
+The server uses provider plugins. Each plugin lists its required keys, models,
+methods, and supported audio formats.
 
-- `whisper-prompt`: OpenAI Whisper with a short bird-list prompt.
-- `deepgram-boost`: Deepgram with boosted bird-name keywords.
-- `google-context`: Google Speech-to-Text with speech context phrases.
+Current plugins:
 
-These are simple wrappers around each provider. They are useful for quick
-manual checks, not for a full accuracy benchmark.
+- OpenAI
+  - `whisper-1`
+  - `gpt-4o-transcribe`
+  - `gpt-4o-mini-transcribe`
+  - baseline and prompt-based methods
+- Deepgram
+  - `nova-2`
+  - `nova-3`
+  - baseline, Nova 2 keyword boost, and Nova 3 keyterm prompt methods
+- Google Speech-to-Text
+  - `latest_short`
+  - `latest_long`
+  - baseline, inline phrase set, custom class, and ABNF grammar methods
 
-## Project structure
+Missing keys do not break the app. Providers without keys are marked
+unavailable and are skipped.
 
-```text
-src/                    React app
-src/components/          Recorder and results UI
-src/hooks/               Recording and ASR test hooks
-src/services/            Local result storage and older provider interfaces
-server/                  Express API server
-server/strategies/       Provider-specific transcription strategies
-data/eng-birds.txt       Bird-name data file
-```
+## Test modes
+
+- Blind: no vocabulary help.
+- Prompted/context: sends expected bird names or context to methods that use it.
+- Provider adaptation: uses provider-native vocabulary help such as keyword
+  boost, keyterm prompt, phrase set, custom class, or grammar.
+- Regression: reruns a saved audio case against current provider methods.
 
 ## Requirements
 
-- Node.js
+- Node.js with `node:sqlite` support. This project was tested on Node `v25.3.0`.
 - npm
-- API credentials for the provider you want to test
 - A browser with microphone access
+- API credentials for any provider you want to test
 
 ## Setup
 
@@ -52,15 +63,17 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file in the project root if you need provider credentials:
+Create a `.env` file in the project root if you want to load keys at startup:
 
 ```bash
 OPENAI_API_KEY=your_openai_key
 DEEPGRAM_API_KEY=your_deepgram_key
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/google-service-account.json
+PORT=3001
 ```
 
-You only need the key for the strategy you plan to use.
+You can also enter keys in the setup panel. Those keys are kept in server
+memory for the current local session.
 
 ## Run locally
 
@@ -84,24 +97,34 @@ requests to `http://localhost:3001`.
 ```bash
 npm run dev      # start the React app
 npm run server   # start the local API server
-npm run build    # type-check and build the app
+npm run build    # type-check and build the frontend
 npm run lint     # run ESLint
+npm run test     # run server unit tests
 npm run preview  # preview the built app
 ```
 
-## Notes
+## API overview
 
-- The browser recorder prefers WebM/Opus audio.
-- The Google strategy is configured for `WEBM_OPUS` at `48000` Hz.
-- The server writes uploaded audio to `uploads/` while processing and then
-  removes the temporary file.
-- Results are stored only in browser local storage.
-- Some older frontend provider classes still point to `/api/transcribe`; the
-  current UI uses `/api/test-asr`.
+- `GET /api/providers`: provider status, models, methods, and missing keys.
+- `POST /api/session-keys`: set local-session provider keys.
+- `GET /api/runs`: saved benchmark runs.
+- `POST /api/runs`: upload audio and run selected provider/model/method targets.
+- `POST /api/runs/:id/rerun`: rerun a saved test case.
+- `POST /api/results/:id/grade`: save a manual grade and notes.
+
+## Stored data
+
+Runtime benchmark data is written under `data/benchmark/`:
+
+- `ornitho-benchmark.sqlite`
+- uploaded or recorded audio files in `recordings/`
+
+This folder is ignored by git.
 
 ## Current limits
 
-- There is no automated scoring against a reference transcript.
-- There is no shared database or user account system.
-- Audio is not transcoded before being sent to providers.
-- Provider errors are shown in the UI, but retry handling is minimal.
+- The app is local-first and has no user accounts.
+- API keys entered in the UI are kept only in server memory.
+- Cost estimates are not calculated yet.
+- Google grammar and adaptation support depends on the model and account setup.
+- Provider APIs can change; plugin methods may need small updates over time.
