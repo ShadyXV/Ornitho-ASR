@@ -1,73 +1,107 @@
-# React + TypeScript + Vite
+# Ornitho ASR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ornitho ASR is a small test app for trying speech-to-text tools with bird names.
 
-Currently, two official plugins are available:
+The app records audio in the browser, sends it to a local server, and shows the
+transcription result. You can add a comma-separated bird list so each provider
+gets some context for the words you expect.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What it does
 
-## React Compiler
+- Records audio from the browser microphone.
+- Lets you choose one ASR strategy before recording.
+- Sends the recording and bird list to the local API.
+- Shows the returned text, response time, word count, and the saved audio clip.
+- Stores test results in browser local storage until you clear them.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ASR strategies
 
-## Expanding the ESLint configuration
+The server currently has three strategies:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `whisper-prompt`: OpenAI Whisper with a short bird-list prompt.
+- `deepgram-boost`: Deepgram with boosted bird-name keywords.
+- `google-context`: Google Speech-to-Text with speech context phrases.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+These are simple wrappers around each provider. They are useful for quick
+manual checks, not for a full accuracy benchmark.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/                    React app
+src/components/          Recorder and results UI
+src/hooks/               Recording and ASR test hooks
+src/services/            Local result storage and older provider interfaces
+server/                  Express API server
+server/strategies/       Provider-specific transcription strategies
+data/eng-birds.txt       Bird-name data file
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Requirements
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Node.js
+- npm
+- API credentials for the provider you want to test
+- A browser with microphone access
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Create a `.env` file in the project root if you need provider credentials:
+
+```bash
+OPENAI_API_KEY=your_openai_key
+DEEPGRAM_API_KEY=your_deepgram_key
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/google-service-account.json
+```
+
+You only need the key for the strategy you plan to use.
+
+## Run locally
+
+Start the API server:
+
+```bash
+npm run server
+```
+
+In another terminal, start the Vite app:
+
+```bash
+npm run dev
+```
+
+Open the Vite URL shown in the terminal. The Vite dev server proxies `/api`
+requests to `http://localhost:3001`.
+
+## Available scripts
+
+```bash
+npm run dev      # start the React app
+npm run server   # start the local API server
+npm run build    # type-check and build the app
+npm run lint     # run ESLint
+npm run preview  # preview the built app
+```
+
+## Notes
+
+- The browser recorder prefers WebM/Opus audio.
+- The Google strategy is configured for `WEBM_OPUS` at `48000` Hz.
+- The server writes uploaded audio to `uploads/` while processing and then
+  removes the temporary file.
+- Results are stored only in browser local storage.
+- Some older frontend provider classes still point to `/api/transcribe`; the
+  current UI uses `/api/test-asr`.
+
+## Current limits
+
+- There is no automated scoring against a reference transcript.
+- There is no shared database or user account system.
+- Audio is not transcoded before being sent to providers.
+- Provider errors are shown in the UI, but retry handling is minimal.
