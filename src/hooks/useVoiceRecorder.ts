@@ -1,5 +1,11 @@
 import { useState, useRef, useCallback } from 'react';
 
+declare global {
+    interface Window {
+        webkitAudioContext?: typeof AudioContext;
+    }
+}
+
 export interface UseVoiceRecorderReturn {
     isRecording: boolean;
     audioBlob: Blob | null;
@@ -30,7 +36,12 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
             // Visualizer Setup
-            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextConstructor) {
+                throw new Error('Audio recording is not supported in this browser');
+            }
+
+            const audioContext = new AudioContextConstructor();
             audioContextRef.current = audioContext;
             const analyser = audioContext.createAnalyser();
             analyser.fftSize = 256;
@@ -91,9 +102,9 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
 
             updateVisualizer();
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Recording error:", err);
-            setError(err.message || 'Could not start recording');
+            setError(err instanceof Error ? err.message : 'Could not start recording');
             setIsRecording(false);
         }
     }, []);
