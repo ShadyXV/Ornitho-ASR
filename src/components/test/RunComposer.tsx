@@ -6,6 +6,9 @@ import type { ProviderInfo, RunTarget } from '../../types';
 interface RunComposerProps {
   providers: ProviderInfo[];
   recorder: UseVoiceRecorderReturn;
+  routeTitle: string;
+  routeDescription: string;
+  selectedTargetCount: number;
   uploadedFile: File | null;
   onFileChange: (file: File | null) => void;
   expectedTranscript: string;
@@ -35,10 +38,21 @@ export function RunComposer(props: RunComposerProps) {
     <div className="rounded-lg border border-zinc-200 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">New benchmark run</h2>
-          <p className="text-sm text-zinc-600">One recording can run against many provider methods.</p>
+          <h2 className="text-lg font-semibold">{props.routeTitle}</h2>
+          <p className="text-sm text-zinc-600">{props.routeDescription}</p>
         </div>
         <BarChart3 className="h-5 w-5 text-emerald-700" />
+      </div>
+
+      <div className="mb-4 grid gap-3 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 text-sm sm:grid-cols-2">
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Selected targets</p>
+          <p className="font-semibold text-zinc-900">{props.selectedTargetCount}</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Run mode</p>
+          <p className="font-semibold capitalize text-zinc-900">{props.mode}</p>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Download } from 'lucide-react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { ProviderSetup } from '../components/test/ProviderSetup';
 import { ResultsPanel } from '../components/test/ResultsPanel';
 import { RunComposer } from '../components/test/RunComposer';
+import { TestHeader } from '../components/test/TestHeader';
 import type { EnvKey } from '../constants/providerKeys';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { exportFile, runsToCsv } from '../lib/runExports';
@@ -95,7 +95,7 @@ export function TestScreen() {
     });
     const data = await response.json() as { providers: ProviderInfo[] };
     setProviders(data.providers);
-    setSelectedTargetIds(defaultTargetIds(data.providers));
+    setSelectedTargetIds(routeTargetIds(data.providers, location.pathname, providerId, modelId));
     setMessage('Provider status updated for this server session.');
   }
 
@@ -169,27 +169,13 @@ export function TestScreen() {
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-950">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm font-medium text-emerald-700">Ornitho ASR</p>
-            <h1 className="text-2xl font-semibold tracking-normal">{testTitle}</h1>
-            <p className="mt-1 text-sm text-zinc-600">{testDescription}</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-600">
-            <Link to="/" className="rounded-md border border-zinc-300 px-3 py-2 hover:bg-zinc-100">Dashboard</Link>
-            <span>{availableCount} provider{availableCount === 1 ? '' : 's'} available</span>
-            <button onClick={() => exportFile('ornitho-asr-runs.json', JSON.stringify(runs, null, 2), 'application/json')} className="inline-flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-2 hover:bg-zinc-100">
-              <Download className="h-4 w-4" />
-              JSON
-            </button>
-            <button onClick={() => exportFile('ornitho-asr-runs.csv', runsToCsv(runs), 'text/csv')} className="inline-flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-2 hover:bg-zinc-100">
-              <Download className="h-4 w-4" />
-              CSV
-            </button>
-          </div>
-        </div>
-      </header>
+      <TestHeader
+        title={testTitle}
+        description={testDescription}
+        availableProviderCount={availableCount}
+        onExportJson={() => exportFile('ornitho-asr-runs.json', JSON.stringify(runs, null, 2), 'application/json')}
+        onExportCsv={() => exportFile('ornitho-asr-runs.csv', runsToCsv(runs), 'text/csv')}
+      />
 
       <main className="mx-auto grid max-w-7xl gap-6 px-5 py-6 xl:grid-cols-[420px_minmax(0,1fr)]">
         <section className="space-y-5">
@@ -203,6 +189,9 @@ export function TestScreen() {
           <RunComposer
             providers={providers}
             recorder={recorder}
+            routeTitle={testTitle}
+            routeDescription={testDescription}
+            selectedTargetCount={selectedTargets.length}
             uploadedFile={uploadedFile}
             onFileChange={setUploadedFile}
             expectedTranscript={expectedTranscript}
