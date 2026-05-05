@@ -20,7 +20,6 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
     const animationFrameRef = useRef<number | null>(null);
     const analyserRef = useRef<AnalyserNode | null>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
-    const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
 
     const startRecording = useCallback(async () => {
         try {
@@ -39,15 +38,19 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
 
             const source = audioContext.createMediaStreamSource(stream);
             source.connect(analyser);
-            sourceRef.current = source;
 
             // MediaRecorder Setup
-            let mimeType = 'audio/webm';
-            if (MediaRecorder.isTypeSupported('audio/wav')) {
-                mimeType = 'audio/wav';
+            // Prefer webm/opus for consistency with our server strategy expectation
+            let mimeType = 'audio/webm;codecs=opus';
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+                mimeType = 'audio/webm'; // Fallback
+            }
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+                mimeType = ''; // Let browser decide
             }
 
-            const mediaRecorder = new MediaRecorder(stream, { mimeType });
+            const options = mimeType ? { mimeType } : undefined;
+            const mediaRecorder = new MediaRecorder(stream, options);
             mediaRecorderRef.current = mediaRecorder;
 
             mediaRecorder.ondataavailable = (event) => {
@@ -57,7 +60,8 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
             };
 
             mediaRecorder.onstop = () => {
-                const fullBlob = new Blob(chunksRef.current, { type: mimeType });
+                const finalType = mediaRecorder.mimeType || 'audio/webm';
+                const fullBlob = new Blob(chunksRef.current, { type: finalType });
                 setAudioBlob(fullBlob);
 
                 // Cleanup stream tracks
@@ -77,10 +81,8 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
                 if (!analyserRef.current) return;
                 const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
                 analyserRef.current.getByteFrequencyData(dataArray);
-                setVisualizerData(new Uint8Array(dataArray)); // Copy to trigger state update if needed, strictly speaking state updates on every frame is heavy, but for this demo it's fine. 
-                // Note: For better performance in production, use a ref for the canvas and draw directly instead of state updates.
-                // But the requirement says "visualizer data... to show the user they are actually making noise". 
-                // Passing data back via state is okay for simple UI indicators.
+                // Intentionally causing re-render for visualization
+                setVisualizerData(new Uint8Array(dataArray));
 
                 if (mediaRecorder.state === 'recording') {
                     animationFrameRef.current = requestAnimationFrame(updateVisualizer);
@@ -90,6 +92,7 @@ export const useVoiceRecorder = (): UseVoiceRecorderReturn => {
             updateVisualizer();
 
         } catch (err: any) {
+            console.error("Recording error:", err);
             setError(err.message || 'Could not start recording');
             setIsRecording(false);
         }
