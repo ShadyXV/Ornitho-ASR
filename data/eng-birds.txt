@@ -1,0 +1,1061 @@
+GALLIFORMES
+Phasianidae
+Snow Partridge
+Hill Partridge
+Rufous-throated Partridge
+Tibetan Partridge
+Common Quail
+Rain Quail
+Asian Blue Quail
+Jungle Bush-quail
+Himalayan Snowcock
+Tibetan Snowcock
+Chukar
+Black Francolin
+Grey Francolin
+Swamp Francolin
+Indian Peafowl
+Red Junglefowl
+Himalayan Monal
+Satyr Tragopan
+Blood Pheasant
+Koklass Pheasant
+Cheer Pheasant
+Kalij Pheasant
+ANSERIFORMES
+Anatidae
+Fulvous Whistling-duck
+Lesser Whistling-duck
+Whooper Swan
+Tundra Swan
+Bean Goose
+Bar-headed Goose
+Greater White-fronted Goose
+Greylag Goose
+Long-tailed Duck
+Common Goldeneye
+Smew
+Goosander
+Red-breasted Merganser
+Ruddy Shelduck
+Common Shelduck
+African Comb Duck
+Cotton Pygmy-goose
+Red-crested Pochard
+Common Pochard
+Baer’s Pochard
+Ferruginous Duck
+Tufted Duck
+Greater Scaup
+Pink-headed Duck
+Garganey
+Northern Shoveler
+Falcated Duck
+Mandarin Duck
+Gadwall
+Eurasian Wigeon
+Indian Spot-billed Duck
+Chinese Spot-billed Duck
+Mallard
+Northern Pintail
+Common Teal
+Baikal Teal
+PODICIPEDIFORMES
+Podicipedidae
+Little Grebe
+Great Crested Grebe
+Black-necked Grebe
+PHOENICOPTERIFORMES
+Phoenicopteridae
+Greater Flamingo
+COLUMBIFORMES
+Columbidae
+Rock Dove
+Hill Pigeon
+Snow Pigeon
+Common Woodpigeon
+Speckled Woodpigeon
+Ashy Woodpigeon
+Oriental Turtle-dove
+Eurasian Collared-dove
+Red Turtle-dove
+Western Spotted Dove
+Laughing Dove
+Barred Cuckoo-dove
+Grey-capped Emerald Dove
+Orange-breasted Green-pigeon
+Ashy-headed Green-pigeon
+Thick-billed Green-pigeon
+Yellow-footed Green-pigeon
+Pin-tailed Green-pigeon
+Wedge-tailed Green-pigeon
+Mountain Imperial-pigeon
+PTEROCLIFORMES
+Pteroclidae
+Tibetan Sandgrouse
+CAPRIMULGIFORMES
+Caprimulgidae
+Grey Nightjar
+Sykes’s Nightjar
+Large-tailed Nightjar
+Indian Nightjar
+Savanna Nightjar
+Hemiprocnidae
+Crested Treeswift
+Apodidae
+White-rumped Spinetail
+White-throated Needletail
+Silver-backed Needletail
+Himalayan Swiftlet
+Asian Palm-swift
+Alpine Swift
+Pacific Swift
+House Swift
+Common Swift
+CUCULIFORMES
+Cuculidae
+Greater Coucal
+Lesser Coucal
+Sirkeer Malkoha
+Green-billed Malkoha
+Jacobin Cuckoo
+Chestnut-winged Cuckoo
+Western Koel
+Asian Emerald Cuckoo
+Banded Bay Cuckoo
+Grey-bellied Cuckoo
+Fork-tailed Drongo-cuckoo
+Large Hawk-cuckoo
+Common Hawk-cuckoo
+Whistling Hawk-cuckoo
+Indian Cuckoo
+Common Cuckoo
+Lesser Cuckoo
+Oriental Cuckoo
+Plaintive Cuckoo
+GRUIFORMES
+Rallidae
+Slaty-breasted Rail
+Eastern Water Rail
+Western Water Rail
+Ruddy-breasted Crake
+Brown Crake
+Baillon’s Crake
+Black-tailed Crake
+Spotted Crake
+Slaty-legged Crake
+White-breasted Waterhen
+Watercock
+Purple Swamphen
+Common Moorhen
+Common Coot
+Gruidae
+Sarus Crane
+Demoiselle Crane
+Common Crane
+Black-necked Crane
+GAVIIFORMES
+Gaviidae
+Red-throated Loon
+OTIDIFORMES
+Otididae
+Bengal Florican
+Lesser Florican
+Ciconiidae
+Greater Adjutant
+Lesser Adjutant
+Painted Stork
+Asian Openbill
+Black Stork
+Asian Woollyneck
+White Stork
+Black-necked Stork
+Threskiornithidae
+Eurasian Spoonbill
+Black-headed Ibis
+Red-naped Ibis
+Glossy Ibis
+PELECANIFORMES
+Ardeidae
+Eurasian Bittern
+Yellow Bittern
+Cinnamon Bittern
+Black Bittern
+Malay Night-heron
+Black-crowned Night-heron
+Green-backed Heron
+Indian Pond-heron
+Cattle Egret
+Grey Heron
+White-bellied Heron
+Purple Heron
+Great White Egret
+Intermediate Egret
+Little Egret
+Pelecanidae
+Spot-billed Pelican
+Great White Pelican
+SULIFORMES
+Phalacrocoracidae
+Little Cormorant
+Great Cormorant
+Indian Cormorant
+Anhingidae
+Oriental Darter
+CHARADRIIFORMES
+Burhinidae
+Indian Thick-knee
+Great Thick-knee
+Haematopodidae
+Eurasian Oystercatcher
+Ibidorhynchidae
+Ibisbill
+Recurvirostridae
+Pied Avocet
+Black-winged Stilt
+Charadriidae
+Grey Plover
+Pacific Golden Plover
+Long-billed Plover
+Little Ringed Plover
+Kentish Plover
+Lesser Sandplover
+Greater Sandplover
+Northern Lapwing
+River Lapwing
+Yellow-wattled Lapwing
+Grey-headed Lapwing
+Red-wattled Lapwing
+White-tailed Lapwing
+Rostratulidae
+Greater Painted-snipe
+Jacanidae
+Pheasant-tailed Jacana
+Bronze-winged Jacana
+Scolopacidae
+Red Knot
+Terek Sandpiper
+Red-necked Phalarope
+Whimbrel
+Eurasian Curlew
+Black-tailed Godwit
+Ruddy Turnstone
+Ruff
+Curlew Sandpiper
+Temminck’s Stint
+Long-toed Stint
+Sanderling
+Dunlin
+Little Stint
+Eurasian Woodcock
+Solitary Snipe
+Wood Snipe
+Pintail Snipe
+Common Snipe
+Jack Snipe
+Common Sandpiper
+Green Sandpiper
+Spotted Redshank
+Common Greenshank
+Common Redshank
+Wood Sandpiper
+Marsh Sandpiper
+Turnicidae
+Common Buttonquail
+Yellow-legged Buttonquail
+Barred Buttonquail
+Glareolidae
+Indian Courser
+Oriental Pratincole
+Little Pratincole
+Laridae
+Indian Skimmer
+Brown-headed Gull
+Black-headed Gull
+Pallas’s Gull
+Mew Gull
+Slender-billed Gull
+Lesser Black-backed Gull
+Little Tern
+Caspian Tern
+Whiskered Tern
+White-winged Tern
+River Tern
+Common Tern
+Black-bellied Tern
+Gull-billed Tern
+Sooty Tern
+STRIGIFORMES
+Tytonidae
+Eastern Grass-owl
+Common Barn-owl
+Strigidae
+Brown Boobook
+Collared Owlet
+Asian Barred Owlet
+Jungle Owlet
+Spotted Owlet
+Little Owl
+Collared Scops-owl
+Indian Scops-owl
+Mountain Scops-owl
+Oriental Scops-owl
+Short-eared Owl
+Northern Long-eared Owl
+Brown Wood-owl
+Himalayan Owl
+Mottled Wood Owl
+Eurasian Eagle-owl
+Rock Eagle-owl
+Spot-bellied Eagle
+VM262:42 Scientific Names Only
+script.js:1 
+
+Lerwa lerwa
+Arborophila torqueola
+Arborophila rufogularis
+Perdix hodgsoniae
+Coturnix coturnix
+Coturnix coromandelica
+Synoicus chinensis
+Perdicula asiatica
+Tetraogallus himalayensis
+Tetraogallus tibetanus
+Alectoris chukar
+Francolinus francolinus
+Francolinus pondicerianus
+Francolinus gularis
+Pavo cristatus
+Gallus gallus
+Lophophorus impejanus
+Tragopan satyra
+Ithaginis cruentus
+Pucrasia macrolopha
+Catreus wallichii
+Lophura leucomelanos
+
+
+Dendrocygna bicolor
+Dendrocygna javanica
+Cygnus cygnus
+Cygnus columbianus
+Anser fabalis
+Anser indicus
+Anser albifrons
+Anser anser
+Clangula hyemalis
+Bucephala clangula
+Mergellus albellus
+Mergus merganser
+Mergus serrator
+Tadorna ferruginea
+Tadorna tadorna
+Sarkidiornis melanotos
+Nettapus coromandelianus
+Netta rufina
+Aythya ferina
+Aythya baeri
+Aythya nyroca
+Aythya fuligula
+Aythya marila
+Rhodonessa caryophyllacea
+Spatula querquedula
+Spatula clypeata
+Mareca falcata
+Aix galericulata
+Mareca strepera
+Mareca penelope
+Anas poecilorhyncha
+Anas zonorhyncha
+Anas platyrhynchos
+Anas acuta
+Anas crecca
+Sibirionetta formosa
+
+
+Tachybaptus ruficollis
+Podiceps cristatus
+Podiceps nigricollis
+
+
+Phoenicopterus roseus
+
+
+Columba livia
+Columba rupestris
+Columba leuconota
+Columba palumbus
+Columba hodgsonii
+Columba pulchricollis
+Streptopelia orientalis
+Streptopelia decaocto
+Streptopelia tranquebarica
+Spilopelia suratensis
+Spilopelia senegalensis
+Macropygia unchall
+Chalcophaps indica
+Treron bicinctus
+Treron phayrei
+Treron curvirostra
+Treron phoenicopterus
+Treron apicauda
+Treron sphenurus
+Ducula badia
+
+
+Syrrhaptes tibetanus
+
+
+Caprimulgus jotaka
+Caprimulgus mahrattensis
+Caprimulgus macrurus
+Caprimulgus asiaticus
+Caprimulgus affinis
+
+Hemiprocne coronata
+
+Zoonavena sylvatica
+Hirundapus caudacutus
+Hirundapus cochinchinensis
+Aerodramus brevirostris
+Cypsiurus balasiensis
+Tachymarptis melba
+Apus pacificus
+Apus nipalensis
+Apus apus
+
+
+Centropus sinensis
+Centropus bengalensis
+Taccocua leschenaultii
+Phaenicophaeus tristis
+Clamator jacobinus
+Clamator coromandus
+Eudynamys scolopaceus
+Chrysococcyx maculatus
+Cacomantis sonneratii
+Cacomantis passerinus
+Surniculus dicruroides
+Hierococcyx sparverioides
+Hierococcyx varius
+Hierococcyx nisicolor
+Cuculus micropterus
+Cuculus canorus
+Cuculus poliocephalus
+Cuculus saturatus
+Cacomantis merulinus
+
+
+Lewinia striata
+Rallus indicus
+Rallus aquaticus
+Zapornia fusca
+Zapornia akool
+Zapornia pusilla
+Zapornia bicolor
+Porzana porzana
+Rallina eurizonoides
+Amaurornis phoenicurus
+Gallicrex cinerea
+Porphyrio porphyrio
+Gallinula chloropus
+Fulica atra
+
+Antigone antigone
+Anthropoides virgo
+Grus grus
+Grus nigricollis
+
+
+Gavia stellata
+
+
+Houbaropsis bengalensis
+Sypheotides indicus
+
+Leptoptilos dubius
+Leptoptilos javanicus
+Mycteria leucocephala
+Anastomus oscitans
+Ciconia nigra
+Ciconia episcopus
+Ciconia ciconia
+Ephippiorhynchus asiaticus
+
+Platalea leucorodia
+Threskiornis melanocephalus
+Pseudibis papillosa
+Plegadis falcinellus
+
+
+Botaurus stellaris
+Ixobrychus sinensis
+Ixobrychus cinnamomeus
+Ixobrychus flavicollis
+Gorsachius melanolophus
+Nycticorax nycticorax
+Butorides striata
+Ardeola grayii
+Bubulcus ibis
+Ardea cinerea
+Ardea insignis
+Ardea purpurea
+Ardea alba
+Ardea intermedia
+Egretta garzetta
+
+Pelecanus philippensis
+Pelecanus onocrotalus
+
+
+Microcarbo niger
+Phalacrocorax carbo
+Phalacrocorax fuscicollis
+
+Anhinga melanogaster
+
+
+Burhinus indicus
+Esacus recurvirostris
+
+Haematopus ostralegus
+
+Ibidorhyncha struthersii
+
+Recurvirostra avosetta
+Himantopus himantopus
+
+Pluvialis squatarola
+Pluvialis fulva
+Charadrius placidus
+Charadrius dubius
+Charadrius alexandrinus
+Charadrius mongolus
+Charadrius leschenaultii
+Vanellus vanellus
+Vanellus duvaucelii
+Vanellus malabaricus
+Vanellus cinereus
+Vanellus indicus
+Vanellus leucurus
+
+Rostratula benghalensis
+
+Hydrophasianus chirurgus
+Metopidius indicus
+
+Calidris canutus
+Xenus cinereus
+Phalaropus lobatus
+Numenius phaeopus
+Numenius arquata
+Limosa limosa
+Arenaria interpres
+Calidris pugnax
+Calidris ferruginea
+Calidris temminckii
+Calidris subminuta
+Calidris alba
+Calidris alpina
+Calidris minuta
+Scolopax rusticola
+Gallinago solitaria
+Gallinago nemoricola
+Gallinago stenura
+Gallinago gallinago
+Lymnocryptes minimus
+Actitis hypoleucos
+Tringa ochropus
+Tringa erythropus
+Tringa nebularia
+Tringa totanus
+Tringa glareola
+Tringa stagnatilis
+
+Turnix sylvaticus
+Turnix tanki
+Turnix suscitator
+
+Cursorius coromandelicus
+Glareola maldivarum
+Glareola lactea
+
+Rynchops albicollis
+Larus brunnicephalus
+Larus ridibundus
+Larus ichthyaetus
+Larus canus
+Larus genei
+Larus fuscus
+Sternula albifrons
+Hydroprogne caspia
+Chlidonias hybrida
+Chlidonias leucopterus
+Sterna aurantia
+Sterna hirundo
+Sterna acuticauda
+Gelochelidon nilotica
+Onychoprion fuscatus
+
+
+Tyto longimembris
+Tyto alba
+
+Ninox scutulata
+Glaucidium brodiei
+Glaucidium cuculoides
+Glaucidium radiatum
+Athene brama
+Athene noctua
+Otus lettia
+Otus bakkamoena
+Otus spilocephalus
+Otus sunia
+Asio flammeus
+Asio otus
+Strix leptogrammica
+Strix nivicolum
+Strix ocellata
+Bubo bubo
+Bubo bengalensis
+Bubo nipalensis
+Bubo coromandus
+Ketupa zeylonensis
+Ketupa flavipes
+
+
+Pandion halia
+VM262:46 Nepali Names Only
+script.js:1 
+
+लरवान
+पिउरा
+लालकण्ठे पिउरा
+हिमाली पिउरा
+बट्टाई
+छनक बट्टाई
+खरबट्टाई
+गैरीकलाव बट्टाई
+हिमाली हिउँकुखुरा
+कोङ्मा हिउँकुखुरा
+च्याखुरा / चुकर
+कालो तित्रा
+कपिञ्जल तित्रा
+सिमतित्रा
+मुजुर / मयुर
+लुईचे
+डाँफे
+मुनाल
+चिलिमे
+फोक्रास
+चीर
+कालिज
+
+
+ठुलो सिलसिले
+सिलसिले
+महाराजहंस
+राजहंस
+पहेंलोठुँडे कलहाँस
+खोयाहाँस
+श्वेतमाथा कलहाँस
+कलहाँस
+लामपुच्छ्रे हाँस
+स्वर्णनयन हाँस
+देवदुत मणितुण्डक
+मणितुण्डक
+कुमथोप्ले मणितुण्डक
+चखेवा चखेवी
+लालठूडें चखेवा
+नकटा
+हरिहाँस
+सुनजुरे हाँस
+कैलोटाउके हाँस
+देेवहाँस
+मालक हाँस
+कालीजुरे हाँस
+कालोटाउके हाँस
+गुलाफीटाउके हाँस
+श्वेताखिँभौँ
+बेल्चाठूडें हाँस
+फुर्के हाँस
+मण्डारिन हाँस
+खडखडे हाँस
+सिन्दुरे हाँस
+नादुन हाँस
+थोप्ला चुच्चे नादुन हाँस
+हरियो टाऊके
+सुइरोपुछ्रे
+बिजुलगैरी
+बेैकालगैरी
+
+
+डुबुल्कीचरा
+सिउरे डुबुल्कीचरा
+कालीकण्ठ डुबुल्कीचरा
+
+
+भद्रपन्छी
+
+
+मलेवा
+लेकाली मलेवा
+हिमाली मलेवा
+ठुलो वनपरेवा
+छिरबिरे वनपरेवा
+फुस्रो वनपरेवा
+तामे ढुकुर
+कण्ठे ढुकुर
+सानोतामे ढुकुर
+कु्र्ले ढुकुर
+धुसर ढुकुर
+धर्के ढुकुर
+हारील ढुकुर
+सुन्तलेछाती हलेसो
+फुस्रोटाउके हलेसो
+मोटोठूँडे हलेसो
+हलेसो
+सुइरोपुच्छ्रे हलेसो
+पहाडी हलेसो
+राजकपोत
+
+
+भोट मरुपरेवा
+
+
+फुस्रो चैतेचरा
+चैतेचरा
+लामपुच्छ्रे चैतेचरा
+चुकचुके चैतेचरा
+चुइयाँ चैतेचरा
+
+जुरे गौँथली
+
+सानो गौँथली
+सेतोकण्ठे गौँथली
+चाँदीडाडे गौँथली
+चिंचिका गौँथली
+थाकल गौँथली
+बतासी गौँथली
+पुच्छरकापे गौँथली
+फिरफिरे घरगौथली
+खैरो गौँथली
+
+
+ढोडे गोकुल
+सानो गोकुल
+न्याउरी मालकौवा
+हरित मालकौवा
+जुरे कोइली
+ठूलोजुरे कोइली
+कोइली
+हरित कोइली
+धर्केखैरो कोइली
+फुस्रे सानो कोइली
+चिबे कोइली
+पहाडी बीउ कुहियो
+बीउ कुहियो
+पपीहा कोइली
+काफल पाक्यो
+कुक्कु कोइली
+सानो कोइली
+पुर्वीय कोइली
+पेठकैले कोइली
+
+
+ठुलो कस्दरी
+पुर्वीय कुलावारी
+कुलावारी
+घोल कस्दरी
+ध्वांसे सिमकुखुरा
+झिली
+कुालोपुच्छ्रे कस्दरी
+ठुुलो झिली
+देउकौवा
+सिमकुखुरा
+जलकुखुरा
+कुर्मा
+बगाले सिमकुखुरा
+मरुल
+
+सारस
+करयाङ-कुरुङ
+लक्ष्मण सारस
+कालीकण्ठ सारस
+
+
+लालकण्ठे लुन
+
+
+खरमजुर
+सानो खरमजुर
+
+राज गरुड
+भुँडिफोर गरुड
+लालटाउके गरुड
+घुंगीफोर गरुड
+कालो गरूड
+लोभीपापी गरूड
+सेतो गरुड
+कृष्णकण्ठ गरुड
+
+चम्चाठूँडे साँवरी
+सेतो साँवरी
+कर्रा साँवरी
+सानो साँवरी
+
+
+ठुलो जुनबकुल्ला
+पहेंलो जुनबकुल्ला
+रातो जुनबकुल्ला
+कालो जुनबकुल्ला
+मलाया बाँकेबकुल्ला
+बाँकेबकुल्ला
+छोटाखुट्टे बकुल्ला
+आसकोटे बकुल्ला
+वस्तु बकुल्ला
+फुस्रो बकुल्ला
+ठुलो वनबकुल्ला
+ध्यानी बकुल्ला
+ठुलो सेतोबकुल्ला
+मझौला सेतोबकुल्ला
+सानो सेतोबकुल्ला
+
+घाउँके हावासील
+ठुलो घाउँके हावासील
+
+
+सानो जलेवा
+जलेवा
+मझौला जलेवा
+
+सुइरोठूँडे
+
+
+बगरबट्टाई
+ठूलो बगरबट्टाई
+
+सिपी चरा
+
+तिलहरी चरा
+
+हलीमुख
+प्रवालपाद
+
+फुस्रे सर्षपी
+प्रशान्त सर्षपी
+लामठूडे राजपुत्रिका
+लधु राजपुत्रिका
+आलकचन्द्र राजपुत्रिका
+मंगोल राजपुत्रिका
+बडा राजपुत्रिका
+जुरे हुटिट्याउ
+खोले हुटिट्याउ
+दोयम हुटिट्याउ
+राज हुटिट्याउ
+हुटिट्याउ
+सेतोपुच्छ्रे हुटिट्याउ
+
+चित्राङ्गड
+
+जलअप्सरा
+लामाऔँले
+
+रातो जलरङ्क
+फालीठूँडे सुडसुडिया
+लालकण्ठे फालारोप
+सानो आँसीठूँडे
+आँसीठूँडे
+मलगुझा
+बगर ज्यामी
+राजसुडसुडिया
+आँसीठूँडे जलरङ्ग
+जलरङ्ग
+लामाऔँले जलरङ्ग
+श्वेत जलरङ्ग
+ठूलो जलरङ्ग
+कालीखुट्टे जलरङ्ग
+ठूलो चाहा
+भार्का चाहा
+वन चाहा
+भारक चाहा
+पानी चाहा
+गोभण्डीर चाहा
+चञ्चले सुडसुडिया
+रुख सुडसुडिया
+थोप्ले टिमटिमा
+टिमटिमा
+लालखुट्टे टिमटिमा
+वन सुडसुडिया
+मसिनोठूंडे टिमटिमा
+
+सानो गट्टेबट्टाई
+पहेंलो गट्टेबट्टाई
+धर्के गट्टेबट्टाई
+
+गाजले धावक
+ठूलो पानीगौथली
+पानीगौथली
+
+झाँझर चिउवा
+खैरोटाउके गंगाचील
+कालोटाउके गंगाचील
+राजा गंगाचील
+मिउ गंगाचील
+तनुठूँडे गंगाचील
+कृष्णपंख गंगाचील
+लघु फ्यालफ्याले
+केकरा फ्यालफ्याले
+ठिमाहा फ्यालफ्याले
+सेतोपंखे फ्यालफ्याले
+कुकारी फ्यालफ्याले
+वायु फ्यालफ्याले
+उत्क्रोशी फ्यालफ्याले
+गंगाचीलठूँडे फ्यालफ्याले
+ध्वाँसे फ्यालफ्याले
+
+
+घाँसे लाटोकोसेरो
+गोठे लाटोकोसेरो
+
+कालपेचक
+सानो डुन्डुल
+ठूलो डुन्डुल
+डुन्डुल
+कोचलगाँडे लाटोकोसेरो
+हिमाली कोचलगाँडे
+चित्री उलूक
+उलूक
+लेकाली उलूक
+लोखर्के उलूक
+लघुकर्ण लाटोकोसेरो
+लामकाने लाटोकोसेरो
+चश्मे उलूक
+कैलो पहाडी उलूक
+छिर्के उलूक
+हिमाली हाप्सिलो
+हाप्सिलो
+महाकौशिक
+भाकोलुक
+मलाहा हुचील
+कैलो मलाहा हुचील
+
+
+मलाहा चील
+
+मुसे चील
+मधुहा
+कैलो जुरेबाज
+कालो जुरेबाज
+काकाकुल
+सर्पहारी चील
+हाडफोर
+सेतो गिद्ध
+सुन गिद्ध
+हिमाली गिद्ध
+डंगर गिद्ध
+सानो खैरो गिद्ध
+लामो ठूँडे गिद्ध
+खैरो गिद्ध
+राज गिद्ध
+पहाडी शदलचील
+शदलचील
+सेतोकण्ठे महाचील
+द्रोणक चील
+लघु महाचील
+जीवाहार महाचील
+राग महाचील
+गोमायु महाचील
+रणमत्त महाचील
+सुपर्ण महाचील
+मोरङ्गी महाचील
+काँधचन्द्र महाचील
+सिम भुइँचील
+पुर्वीय सिम भुइँचील
+चल्लाचोर भुइँचील
+श्वेत भुइँचील
+आब्लाक भुइँचील
+मोन्टागु भुइँचील
+कल्की बसेरा
+शीक्रा
+बेसरा
+वनबाज
+बलाकांक्ष वनबाज
+बोक्सी चील
+कंगम चील
+सानो माछाकुल
+माछाकुल
+सेतोटाउके चील
+कालो चील
+जमल श्येनबाज
+श्यनबाज
+लामखुट्टे श्येनबाज
+पहाडी श्येनबाज
+
+
+रक्त्त शिर
+
+
+राजधनेश
+सानो धनेश
+कालो धनेश
+होमराई
+
+फाप्रे चरा
+
+
+मधुमक्षी भक्षका
+मुरलीचरा
+कटुसटाउके मुरलीचरा
+नीलपुच्छे मुरलीचरा
+
+ठेउवा
+हरित गर्दने ठेउवा
+लालचुच्चे ठेउवा
+
+नीलटाउके माटीकोरे
+सानो माटीकोरे
+ठूलो छिरबिरे माटीकोरे
+छिरबिरे माटीकोरे
+ठूलो माटीकोरे
+कटुसबदन माटीकोरे
+सेतोकण्ठे माटीकोरे
+मझौला माटीकोरे
+कालोटाउके माटीकोरे
+
+
+मिलचरा
+वसन्त
+न्याउली
+छिर्के कुथुर्के
+कुमछिर्के कुथुर्के
+कुक्लुङ्ग
+कुथुर्के
+
+चाकासूचक
+
+खरलाहाँचे
+ससिया
+थोप्ले ससिया
+तामे लाहाँचे
+गर्दनथोप्ले लाहाँचे
+सेतोगर्देने लाहाँचे
+तीनऔँले लाहाँचे
+कालोढाडे लाहाँचे
+कैलो लाहाँचे
+सानोतामे लाहाँचे
+ठूलो सुनजुरे काठफोर
+सुनजुरे काठफोर
+कत्ले काठफोर
+कालोगर्दने काठफोर
+ठूलोकत्ले काठफोर
+राजलाहाँचे
+फुस्रोटाउके काष्ठकूट
+पुन्टे काष्ठकूट
+पहेँलोटाउके काष्ठकूट
+खैरोटाउके काष्ठकूट
+रातोछाती काष्ठकूट
+कैलोछाती काष्ठकूट
+काष्ठकूट
+दार्जीलिङ्ग काष्ठकूट
+हिमाली काष्ठकूट
