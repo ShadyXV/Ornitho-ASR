@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { DashboardScreen } from './screens/DashboardScreen';
 import { NewSampleScreen } from './screens/NewSampleScreen';
+import { ResultsScreen } from './screens/ResultsScreen';
 import { SampleDetailScreen } from './screens/SampleDetailScreen';
 import { TestScreen } from './screens/TestScreen';
 
@@ -8,6 +9,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<DashboardScreen />} />
+      <Route path="/results" element={<ResultsScreen />} />
       <Route path="/samples/new" element={<NewSampleScreen />} />
       <Route path="/samples/:id" element={<SampleDetailScreen />} />
       <Route path="/test/blind" element={<TestScreen />} />
