@@ -15,12 +15,10 @@ import {
   Upload,
   XCircle,
 } from 'lucide-react';
+import { envKeys, type EnvKey } from './constants/providerKeys';
 import { useVoiceRecorder } from './hooks/useVoiceRecorder';
+import { DashboardScreen } from './screens/DashboardScreen';
 import type { ProviderInfo, ResultRecord, RunRecord, RunTarget } from './types';
-
-const envKeys = ['OPENAI_API_KEY', 'DEEPGRAM_API_KEY', 'GOOGLE_APPLICATION_CREDENTIALS'] as const;
-
-type EnvKey = typeof envKeys[number];
 
 function targetKey(target: RunTarget): string {
   return `${target.providerId}:${target.modelId}:${target.methodId}`;
@@ -340,7 +338,7 @@ function BenchmarkWorkspace() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<BenchmarkWorkspace />} />
+      <Route path="/" element={<DashboardScreen />} />
       <Route path="/test/blind" element={<BenchmarkWorkspace />} />
       <Route path="/test/full" element={<BenchmarkWorkspace />} />
       <Route path="/test/provider/:providerId" element={<BenchmarkWorkspace />} />
