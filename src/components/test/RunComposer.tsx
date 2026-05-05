@@ -9,6 +9,7 @@ interface RunComposerProps {
   routeTitle: string;
   routeDescription: string;
   selectedTargetCount: number;
+  hasSampleAudio?: boolean;
   uploadedFile: File | null;
   onFileChange: (file: File | null) => void;
   expectedTranscript: string;
@@ -33,6 +34,7 @@ interface RunComposerProps {
 
 export function RunComposer(props: RunComposerProps) {
   const hasAudio = Boolean(props.uploadedFile || props.recorder.audioBlob);
+  const canRun = hasAudio || Boolean(props.hasSampleAudio);
 
   return (
     <div className="rounded-lg border border-zinc-200 bg-white p-5">
@@ -80,6 +82,11 @@ export function RunComposer(props: RunComposerProps) {
         <FileAudio className="h-4 w-4" />
         {props.uploadedFile?.name || (props.recorder.audioBlob ? 'Recorded audio ready' : 'No audio selected')}
       </div>
+      {props.hasSampleAudio && (
+        <div className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
+          Saved sample audio loaded for this comparison.
+        </div>
+      )}
       {props.recorder.error && <p className="mt-2 text-sm text-red-700">{props.recorder.error}</p>}
 
       <div className="mt-5 grid gap-4">
@@ -159,7 +166,7 @@ export function RunComposer(props: RunComposerProps) {
 
       <button
         onClick={props.onRun}
-        disabled={props.isRunning || !hasAudio}
+        disabled={props.isRunning || !canRun}
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-emerald-700 px-3 py-3 text-sm font-medium text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-zinc-300"
       >
         {props.isRunning ? <Activity className="h-4 w-4 animate-spin" /> : <BarChart3 className="h-4 w-4" />}

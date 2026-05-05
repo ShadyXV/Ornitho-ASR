@@ -52,6 +52,41 @@ export interface TestCaseRecord {
   tags: string[];
 }
 
+export interface SampleRecord {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  audioPath: string;
+  mimeType: string;
+  transcript: string;
+  birdTerms: string[];
+  notes: string;
+  tags: string[];
+  sourceProviderId: string;
+  sourceModelId: string;
+  sourceMethodId: string;
+  transcriptStatus: string;
+}
+
+export interface CreateSampleInput {
+  transcript: string;
+  birdTerms: string;
+  notes: string;
+  tags: string;
+  sourceProviderId: string;
+  sourceModelId: string;
+  sourceMethodId: string;
+  transcriptStatus: string;
+}
+
+export interface UpdateSampleInput {
+  transcript: string;
+  birdTerms: string;
+  notes: string;
+  tags: string;
+  transcriptStatus: string;
+}
+
 export interface ResultRecord {
   id: string;
   runId: string;

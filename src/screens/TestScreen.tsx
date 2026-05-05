@@ -10,10 +10,11 @@ import { fetchJson } from '../lib/api';
 import { exportFile, runsToCsv } from '../lib/runExports';
 import { routeDescription, routeMode, routeTargetIds, routeTitle } from '../lib/testRoutes';
 import { defaultTargetIds, selectedTargets as getSelectedTargets, targetKey } from '../lib/runTargets';
-import type { ProviderInfo, ResultRecord, RunRecord, RunTarget } from '../types';
+import { sampleBirdTermsText, sampleTagsText } from '../lib/samples';
+import type { ProviderInfo, ResultRecord, RunRecord, RunTarget, SampleRecord } from '../types';
 
 export function TestScreen() {
-  const { providerId, modelId } = useParams();
+  const { providerId, modelId, sampleId } = useParams();
   const location = useLocation();
   const recorder = useVoiceRecorder();
   const [providers, setProviders] = useState<ProviderInfo[]>([]);
@@ -34,14 +35,16 @@ export function TestScreen() {
   const [tags, setTags] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [message, setMessage] = useState('');
+  const [sample, setSample] = useState<SampleRecord | null>(null);
 
   useEffect(() => {
     let ignore = false;
 
     async function loadInitialData() {
-      const [providerData, runsData] = await Promise.all([
+      const [providerData, runsData, sampleData] = await Promise.all([
         fetchJson<{ providers: ProviderInfo[] }>('/api/providers'),
         fetchJson<{ runs: RunRecord[] }>('/api/runs'),
+        sampleId ? fetchJson<{ sample: SampleRecord }>(`/api/samples/${sampleId}`) : Promise.resolve(null),
       ]);
 
       if (!ignore) {
@@ -49,6 +52,13 @@ export function TestScreen() {
         setSelectedTargetIds(routeTargetIds(providerData.providers, location.pathname, providerId, modelId));
         setRuns(runsData.runs);
         setActiveRun(runsData.runs[0] || null);
+        if (sampleData) {
+          setSample(sampleData.sample);
+          setExpectedTranscript(sampleData.sample.transcript);
+          setBirdTerms(sampleBirdTermsText(sampleData.sample));
+          setNotes(sampleData.sample.notes);
+          setTags(sampleTagsText(sampleData.sample));
+        }
       }
     }
 
@@ -61,7 +71,7 @@ export function TestScreen() {
     return () => {
       ignore = true;
     };
-  }, [location.pathname, modelId, providerId]);
+  }, [location.pathname, modelId, providerId, sampleId]);
 
   useEffect(() => {
     setMode(routeMode(location.pathname, providerId));
@@ -97,7 +107,7 @@ export function TestScreen() {
   }
 
   async function runBenchmark() {
-    if (!audioSource) {
+    if (!audioSource && !sample) {
       setMessage('Record or upload audio first.');
       return;
     }
@@ -111,7 +121,12 @@ export function TestScreen() {
     setMessage('');
 
     const formData = new FormData();
-    formData.append('audio', audioSource, uploadedFile?.name || 'recording.webm');
+    if (audioSource) {
+      formData.append('audio', audioSource, uploadedFile?.name || 'recording.webm');
+    }
+    if (sample) {
+      formData.append('sampleId', sample.id);
+    }
     formData.append('selectedTargets', JSON.stringify(selectedTargets));
     formData.append('expectedTranscript', expectedTranscript);
     formData.append('birdTerms', birdTerms);
@@ -185,6 +200,7 @@ export function TestScreen() {
             routeTitle={testTitle}
             routeDescription={testDescription}
             selectedTargetCount={selectedTargets.length}
+            hasSampleAudio={Boolean(sample)}
             uploadedFile={uploadedFile}
             onFileChange={setUploadedFile}
             expectedTranscript={expectedTranscript}

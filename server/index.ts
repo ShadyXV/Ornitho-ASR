@@ -66,6 +66,65 @@ function parseTags(value: unknown): string[] {
     return splitTerms(parseStringField(value));
 }
 
+function defaultSampleTarget(): RunTarget | null {
+    const providerPreference = ['openai', 'deepgram', 'google'];
+    const providers = getPublicProviders().filter((provider) => provider.available);
+    const orderedProviders = [
+        ...providerPreference
+            .map((id) => providers.find((provider) => provider.id === id))
+            .filter((provider): provider is NonNullable<typeof provider> => Boolean(provider)),
+        ...providers.filter((provider) => !providerPreference.includes(provider.id)),
+    ];
+
+    for (const provider of orderedProviders) {
+        const baseline = provider.methods.find((method) => method.kind === 'baseline' && method.models.length > 0);
+        if (baseline) {
+            return {
+                providerId: provider.id,
+                modelId: baseline.models[0],
+                methodId: baseline.id,
+            };
+        }
+    }
+
+    return null;
+}
+
+async function transcribeSample(params: {
+    audioBuffer: Buffer;
+    audioPath: string;
+    mimeType: string;
+    target: RunTarget;
+}): Promise<{ transcript: string; providerName: string; target: RunTarget; costEstimate: string }> {
+    const validation = validateTarget(params.target);
+    if (!validation.ok) {
+        throw new Error(validation.reason);
+    }
+
+    const provider = findProvider(params.target.providerId);
+    if (!provider) {
+        throw new Error('Provider not found');
+    }
+
+    const output = await provider.transcribe({
+        audioBuffer: params.audioBuffer,
+        audioPath: params.audioPath,
+        mimeType: params.mimeType,
+        modelId: params.target.modelId,
+        methodId: params.target.methodId,
+        birdTerms: [],
+        expectedTranscript: '',
+        previousTranscript: '',
+    });
+
+    return {
+        transcript: output.text,
+        providerName: provider.name,
+        target: params.target,
+        costEstimate: output.costEstimate || '',
+    };
+}
+
 async function runTargets(params: {
     runId: string;
     audioBuffer: Buffer;
@@ -183,35 +242,129 @@ app.get('/api/runs/:id', (req: Request, res: Response) => {
     res.json({ run });
 });
 
-app.post('/api/runs', upload.single('audio'), async (req: Request, res: Response) => {
+app.get('/api/samples', (_req: Request, res: Response) => {
+    res.json({ samples: repository.listSamples() });
+});
+
+app.get('/api/samples/:id', (req: Request, res: Response) => {
+    const sample = repository.getSample(req.params.id);
+    if (!sample) {
+        res.status(404).json({ error: 'Sample not found' });
+        return;
+    }
+
+    res.json({ sample });
+});
+
+app.post('/api/samples/transcribe', upload.single('audio'), async (req: Request, res: Response) => {
     const file = req.file;
     if (!file) {
         res.status(400).json({ error: 'No audio file provided' });
         return;
     }
 
-    const expectedTranscript = parseStringField(req.body.expectedTranscript);
-    const birdTerms = splitTerms(parseStringField(req.body.birdTerms));
+    const parsedTargets = parseTargets(req.body.selectedTargets);
+    const target = parsedTargets[0] || defaultSampleTarget();
+    if (!target) {
+        res.status(400).json({ error: 'Add a provider key before auto-generating a transcript.' });
+        return;
+    }
+
+    try {
+        const result = await transcribeSample({
+            audioBuffer: fs.readFileSync(file.path),
+            audioPath: file.path,
+            mimeType: file.mimetype || 'audio/webm',
+            target,
+        });
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: errorMessage(error) });
+    }
+});
+
+app.post('/api/samples', upload.single('audio'), (req: Request, res: Response) => {
+    const file = req.file;
+    if (!file) {
+        res.status(400).json({ error: 'No audio file provided' });
+        return;
+    }
+
+    const parsedTargets = parseTargets(req.body.selectedTargets);
+    const target = parsedTargets[0] || defaultSampleTarget() || {
+        providerId: '',
+        modelId: '',
+        methodId: '',
+    };
+
+    const sample = repository.createSample({
+        audioPath: file.path,
+        mimeType: file.mimetype || 'audio/webm',
+        transcript: parseStringField(req.body.transcript),
+        birdTerms: splitTerms(parseStringField(req.body.birdTerms)),
+        notes: parseStringField(req.body.notes),
+        tags: parseTags(req.body.tags),
+        sourceProviderId: parseStringField(req.body.sourceProviderId) || target.providerId,
+        sourceModelId: parseStringField(req.body.sourceModelId) || target.modelId,
+        sourceMethodId: parseStringField(req.body.sourceMethodId) || target.methodId,
+        transcriptStatus: parseStringField(req.body.transcriptStatus) || 'manual',
+    });
+
+    res.json({ sample });
+});
+
+app.patch('/api/samples/:id', (req: Request, res: Response) => {
+    const body = req.body as Record<string, unknown>;
+    const sample = repository.updateSample(req.params.id, {
+        transcript: parseStringField(body.transcript),
+        birdTerms: splitTerms(parseStringField(body.birdTerms)),
+        notes: parseStringField(body.notes),
+        tags: parseTags(body.tags),
+        transcriptStatus: parseStringField(body.transcriptStatus) || 'edited',
+    });
+
+    if (!sample) {
+        res.status(404).json({ error: 'Sample not found' });
+        return;
+    }
+
+    res.json({ sample });
+});
+
+app.post('/api/runs', upload.single('audio'), async (req: Request, res: Response) => {
+    const sampleId = parseStringField(req.body.sampleId);
+    const sample = sampleId ? repository.getSample(sampleId) : null;
+    const file = req.file;
+    if (!file && !sample) {
+        res.status(400).json({ error: 'No audio file provided' });
+        return;
+    }
+
+    const expectedTranscript = parseStringField(req.body.expectedTranscript) || sample?.transcript || '';
+    const birdTerms = splitTerms(parseStringField(req.body.birdTerms) || sample?.birdTerms.join(', ') || '');
     const previousTranscript = parseStringField(req.body.previousTranscript);
     const targets = parseTargets(req.body.selectedTargets);
     const selectedTargets = targets.length > 0 ? targets : defaultTargets();
-    const audioBuffer = fs.readFileSync(file.path);
+    const audioPath = file?.path || sample?.audioPath || '';
+    const mimeType = file?.mimetype || sample?.mimeType || 'audio/webm';
+    const audioBuffer = fs.readFileSync(audioPath);
 
     const run = repository.createRun({
-        audioPath: file.path,
-        mimeType: file.mimetype || 'audio/webm',
+        audioPath,
+        mimeType,
         expectedTranscript,
         birdTerms,
         mode: parseStringField(req.body.mode) || 'blind',
-        notes: parseStringField(req.body.notes),
-        tags: parseTags(req.body.tags),
+        notes: parseStringField(req.body.notes) || sample?.notes || '',
+        tags: parseTags(req.body.tags).length > 0 ? parseTags(req.body.tags) : sample?.tags || [],
+        sampleId: sample?.id,
     });
 
     await runTargets({
         runId: run.id,
         audioBuffer,
-        audioPath: file.path,
-        mimeType: file.mimetype || 'audio/webm',
+        audioPath,
+        mimeType,
         birdTerms,
         expectedTranscript,
         previousTranscript,

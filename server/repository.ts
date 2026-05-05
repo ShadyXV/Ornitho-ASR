@@ -15,6 +15,22 @@ export interface TestCaseRecord {
     tags: string[];
 }
 
+export interface SampleRecord {
+    id: string;
+    createdAt: number;
+    updatedAt: number;
+    audioPath: string;
+    mimeType: string;
+    transcript: string;
+    birdTerms: string[];
+    notes: string;
+    tags: string[];
+    sourceProviderId: string;
+    sourceModelId: string;
+    sourceMethodId: string;
+    transcriptStatus: string;
+}
+
 export interface RunRecord {
     id: string;
     testCaseId: string;
@@ -56,6 +72,28 @@ export interface CreateRunInput {
     mode: string;
     notes: string;
     tags: string[];
+    sampleId?: string;
+}
+
+export interface CreateSampleInput {
+    audioPath: string;
+    mimeType: string;
+    transcript: string;
+    birdTerms: string[];
+    notes: string;
+    tags: string[];
+    sourceProviderId: string;
+    sourceModelId: string;
+    sourceMethodId: string;
+    transcriptStatus: string;
+}
+
+export interface UpdateSampleInput {
+    transcript: string;
+    birdTerms: string[];
+    notes: string;
+    tags: string[];
+    transcriptStatus: string;
 }
 
 export interface CreateResultInput {
@@ -128,6 +166,7 @@ export class BenchmarkRepository {
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS test_cases (
                 id TEXT PRIMARY KEY,
+                sample_id TEXT,
                 created_at INTEGER NOT NULL,
                 audio_path TEXT NOT NULL,
                 mime_type TEXT NOT NULL,
@@ -135,6 +174,22 @@ export class BenchmarkRepository {
                 bird_terms_json TEXT NOT NULL,
                 notes TEXT NOT NULL,
                 tags_json TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS samples (
+                id TEXT PRIMARY KEY,
+                created_at INTEGER NOT NULL,
+                updated_at INTEGER NOT NULL,
+                audio_path TEXT NOT NULL,
+                mime_type TEXT NOT NULL,
+                transcript TEXT NOT NULL,
+                bird_terms_json TEXT NOT NULL,
+                notes TEXT NOT NULL,
+                tags_json TEXT NOT NULL,
+                source_provider_id TEXT NOT NULL,
+                source_model_id TEXT NOT NULL,
+                source_method_id TEXT NOT NULL,
+                transcript_status TEXT NOT NULL
             );
 
             CREATE TABLE IF NOT EXISTS runs (
@@ -170,6 +225,11 @@ export class BenchmarkRepository {
                 FOREIGN KEY(run_id) REFERENCES runs(id)
             );
         `);
+
+        const testCaseColumns = this.db.prepare('PRAGMA table_info(test_cases)').all() as Record<string, unknown>[];
+        if (!testCaseColumns.some((column) => textValue(column, 'name') === 'sample_id')) {
+            this.db.exec('ALTER TABLE test_cases ADD COLUMN sample_id TEXT');
+        }
     }
 
     getRecordingsDir(): string {
@@ -183,10 +243,11 @@ export class BenchmarkRepository {
         const createdAt = Date.now();
 
         this.db.prepare(`
-            INSERT INTO test_cases (id, created_at, audio_path, mime_type, expected_transcript, bird_terms_json, notes, tags_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO test_cases (id, sample_id, created_at, audio_path, mime_type, expected_transcript, bird_terms_json, notes, tags_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).run(
             testCaseId,
+            input.sampleId || null,
             createdAt,
             input.audioPath,
             input.mimeType,
@@ -212,6 +273,68 @@ export class BenchmarkRepository {
 
     finishRun(runId: string, status: string): void {
         this.db.prepare('UPDATE runs SET status = ? WHERE id = ?').run(status, runId);
+    }
+
+    createSample(input: CreateSampleInput): SampleRecord {
+        const id = crypto.randomUUID();
+        const createdAt = Date.now();
+
+        this.db.prepare(`
+            INSERT INTO samples (
+                id, created_at, updated_at, audio_path, mime_type, transcript, bird_terms_json,
+                notes, tags_json, source_provider_id, source_model_id, source_method_id, transcript_status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).run(
+            id,
+            createdAt,
+            createdAt,
+            input.audioPath,
+            input.mimeType,
+            input.transcript,
+            JSON.stringify(input.birdTerms),
+            input.notes,
+            JSON.stringify(input.tags),
+            input.sourceProviderId,
+            input.sourceModelId,
+            input.sourceMethodId,
+            input.transcriptStatus,
+        );
+
+        const sample = this.getSample(id);
+        if (!sample) {
+            throw new Error('Sample was not saved');
+        }
+
+        return sample;
+    }
+
+    updateSample(id: string, input: UpdateSampleInput): SampleRecord | null {
+        this.db.prepare(`
+            UPDATE samples
+            SET updated_at = ?, transcript = ?, bird_terms_json = ?, notes = ?, tags_json = ?, transcript_status = ?
+            WHERE id = ?
+        `).run(
+            Date.now(),
+            input.transcript,
+            JSON.stringify(input.birdTerms),
+            input.notes,
+            JSON.stringify(input.tags),
+            input.transcriptStatus,
+            id,
+        );
+
+        return this.getSample(id);
+    }
+
+    getSample(id: string): SampleRecord | null {
+        const row = this.db.prepare('SELECT * FROM samples WHERE id = ?').get(id) as Record<string, unknown> | undefined;
+        return row ? this.mapSample(row) : null;
+    }
+
+    listSamples(limit = 25): SampleRecord[] {
+        const rows = this.db.prepare('SELECT * FROM samples ORDER BY updated_at DESC LIMIT ?').all(limit) as Record<string, unknown>[];
+        return rows.map((row) => this.mapSample(row));
     }
 
     createResult(input: CreateResultInput): ResultRecord {
@@ -309,6 +432,24 @@ export class BenchmarkRepository {
     private getResult(id: string): ResultRecord | null {
         const row = this.db.prepare('SELECT * FROM results WHERE id = ?').get(id) as Record<string, unknown> | undefined;
         return row ? this.mapResult(row) : null;
+    }
+
+    private mapSample(row: Record<string, unknown>): SampleRecord {
+        return {
+            id: textValue(row, 'id'),
+            createdAt: numberValue(row, 'created_at'),
+            updatedAt: numberValue(row, 'updated_at'),
+            audioPath: textValue(row, 'audio_path'),
+            mimeType: textValue(row, 'mime_type'),
+            transcript: textValue(row, 'transcript'),
+            birdTerms: parseJsonArray(row.bird_terms_json),
+            notes: textValue(row, 'notes'),
+            tags: parseJsonArray(row.tags_json),
+            sourceProviderId: textValue(row, 'source_provider_id'),
+            sourceModelId: textValue(row, 'source_model_id'),
+            sourceMethodId: textValue(row, 'source_method_id'),
+            transcriptStatus: textValue(row, 'transcript_status'),
+        };
     }
 
     private listResultsForRun(runId: string): ResultRecord[] {

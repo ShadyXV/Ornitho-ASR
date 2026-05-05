@@ -2,6 +2,9 @@ import { blindTargetIds, defaultTargetIds, targetsForProvider } from './runTarge
 import type { ProviderInfo } from '../types';
 
 export function routeMode(pathname: string, providerId?: string): string {
+  if (pathname.startsWith('/test/sample/')) {
+    return 'sample';
+  }
   if (pathname === '/test/full') {
     return 'full';
   }
@@ -15,6 +18,9 @@ export function routeTargetIds(providers: ProviderInfo[], pathname: string, prov
   if (providerId) {
     return targetsForProvider(providers, providerId, modelId);
   }
+  if (pathname.startsWith('/test/sample/')) {
+    return defaultTargetIds(providers);
+  }
   if (pathname === '/test/full') {
     return defaultTargetIds(providers);
   }
@@ -24,6 +30,9 @@ export function routeTargetIds(providers: ProviderInfo[], pathname: string, prov
 export function routeTitle(pathname: string, providers: ProviderInfo[], providerId?: string, modelId?: string): string {
   if (pathname === '/test/full') {
     return 'Full test';
+  }
+  if (pathname.startsWith('/test/sample/')) {
+    return 'Sample comparison';
   }
   if (pathname === '/test/blind') {
     return 'Blind test';
@@ -41,6 +50,9 @@ export function routeTitle(pathname: string, providers: ProviderInfo[], provider
 export function routeDescription(pathname: string, providerId?: string, modelId?: string): string {
   if (pathname === '/test/full') {
     return 'Runs every available provider, method, and model one by one.';
+  }
+  if (pathname.startsWith('/test/sample/')) {
+    return 'Loads saved sample audio and transcript for provider comparison.';
   }
   if (pathname === '/test/blind') {
     return 'Starts with baseline targets and keeps transcript expectations optional.';
