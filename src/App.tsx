@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   Activity,
   BarChart3,
@@ -103,7 +104,7 @@ function exportFile(name: string, content: string, type: string): void {
   URL.revokeObjectURL(url);
 }
 
-function App() {
+function BenchmarkWorkspace() {
   const recorder = useVoiceRecorder();
   const [providers, setProviders] = useState<ProviderInfo[]>([]);
   const [runs, setRuns] = useState<RunRecord[]>([]);
@@ -333,6 +334,19 @@ function App() {
         </section>
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<BenchmarkWorkspace />} />
+      <Route path="/test/blind" element={<BenchmarkWorkspace />} />
+      <Route path="/test/full" element={<BenchmarkWorkspace />} />
+      <Route path="/test/provider/:providerId" element={<BenchmarkWorkspace />} />
+      <Route path="/test/provider/:providerId/model/:modelId" element={<BenchmarkWorkspace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
