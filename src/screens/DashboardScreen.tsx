@@ -157,14 +157,26 @@ export function DashboardScreen() {
           </ShellCard>
         )}
 
-        {!samplesMessage && samples.length > 0 && (
-          <ShellCard className="p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h3 className="font-bold">Sample library ready</h3>
-                <p className="text-sm text-slate-600">{samples.length} saved sample{samples.length === 1 ? '' : 's'} available for comparison tests.</p>
+        {!samplesMessage && (
+          <ShellCard className="overflow-hidden">
+            <div className="grid min-h-28 gap-4 p-4 pb-0 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
+              <div className="grid h-16 w-16 self-center place-items-center rounded-lg bg-teal-50 text-teal-700">
+                <FileAudio className="h-8 w-8" />
               </div>
-              <Link to="/samples/new" className="rounded-md bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800">Add sample</Link>
+              <div className="self-center pb-4 md:pb-0">
+                <h3 className="font-bold">{samples.length > 0 ? 'Sample library ready' : 'Build your sample library'}</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  {samples.length > 0
+                    ? `${samples.length} saved sample${samples.length === 1 ? '' : 's'} available for comparison tests.`
+                    : 'Record or upload audio samples to reuse in provider comparison tests.'}
+                </p>
+              </div>
+              <div className="flex items-end gap-6 self-end">
+                <img src={audioWaveBanner} alt="" className="hidden h-24 w-[520px] object-contain object-bottom md:block" />
+                <Link to="/samples/new" className="mb-5 inline-flex items-center justify-center rounded-md bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-800">
+                  {samples.length > 0 ? 'Add sample' : 'Record sample'}
+                </Link>
+              </div>
             </div>
           </ShellCard>
         )}

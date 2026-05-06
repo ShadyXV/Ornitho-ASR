@@ -84,7 +84,7 @@ export function AppShell({
 
         <div className="min-w-0 flex-1">
           <header className="border-b border-slate-200 bg-white">
-            <div className="flex flex-col gap-4 px-5 py-5 lg:flex-row lg:items-center lg:justify-between lg:px-7">
+            <div className="flex flex-col gap-4 px-5 py-5 lg:grid lg:grid-cols-[minmax(280px,1fr)_auto] lg:items-start lg:px-7">
               <div className="flex min-w-0 items-center gap-4">
                 <div className="lg:hidden">
                   <BrandMark />
@@ -95,7 +95,7 @@ export function AppShell({
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center justify-start gap-3 lg:justify-end">
                 <HeaderPill tone={apiStatus === 'active' ? 'emerald' : 'amber'} icon={<ShieldCheck className="h-4 w-4" />}>
                   API {apiStatus === 'active' ? 'Active' : 'Paused'}
                 </HeaderPill>

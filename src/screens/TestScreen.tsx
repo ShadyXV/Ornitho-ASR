@@ -2,10 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Download } from 'lucide-react';
 import { useLocation, useParams } from 'react-router-dom';
 import { AppShell } from '../components/layout/AppShell';
-import { ProviderSetup } from '../components/test/ProviderSetup';
 import { ResultsPanel } from '../components/test/ResultsPanel';
 import { RunComposer } from '../components/test/RunComposer';
-import type { EnvKey } from '../constants/providerKeys';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { fetchJson } from '../lib/api';
 import { exportFile, runsToCsv } from '../lib/runExports';
@@ -22,11 +20,6 @@ export function TestScreen() {
   const [runs, setRuns] = useState<RunRecord[]>([]);
   const [activeRun, setActiveRun] = useState<RunRecord | null>(null);
   const [selectedTargetIds, setSelectedTargetIds] = useState<Set<string>>(new Set());
-  const [sessionKeys, setSessionKeys] = useState<Record<EnvKey, string>>({
-    OPENAI_API_KEY: '',
-    DEEPGRAM_API_KEY: '',
-    GOOGLE_APPLICATION_CREDENTIALS: '',
-  });
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [expectedTranscript, setExpectedTranscript] = useState('');
   const [birdTerms, setBirdTerms] = useState('');
@@ -94,17 +87,6 @@ export function TestScreen() {
     const data = await fetchJson<{ runs: RunRecord[] }>('/api/runs');
     setRuns(data.runs);
     setActiveRun(data.runs[0] || null);
-  }
-
-  async function saveSessionKeys() {
-    const data = await fetchJson<{ providers: ProviderInfo[] }>('/api/session-keys', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ keys: sessionKeys }),
-    });
-    setProviders(data.providers);
-    setSelectedTargetIds(routeTargetIds(data.providers, location.pathname, providerId, modelId));
-    setMessage('Provider status updated for this server session.');
   }
 
   async function runBenchmark() {
@@ -197,15 +179,8 @@ export function TestScreen() {
         )}
       >
 
-      <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
-        <section className="space-y-5">
-          <ProviderSetup
-            providers={providers}
-            sessionKeys={sessionKeys}
-            onKeyChange={(key, value) => setSessionKeys((current) => ({ ...current, [key]: value }))}
-            onSave={saveSessionKeys}
-          />
-
+      <div className="grid min-h-[calc(100vh-7.5rem)] items-start gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+        <section className="xl:sticky xl:top-6 xl:h-[calc(100vh-10.5rem)]">
           <RunComposer
             providers={providers}
             recorder={recorder}
