@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 import {
   BarChart3,
   Bot,
@@ -10,28 +10,28 @@ import {
   Settings,
   ShieldCheck,
   Target,
-} from 'lucide-react';
-import { NavLink, Link } from 'react-router-dom';
-import logoAsset from '../../assets/ornitho/logo.png';
-import sidebarIllustration from '../../assets/ornitho/sidebar-illustration.png';
+} from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
+import logoAsset from "../../assets/ornitho/logo.png";
+import sidebarIllustration from "../../assets/ornitho/sidebar-illustration.png";
 
 interface AppShellProps {
   title: string;
   description: string;
   providerCount?: number;
   targetCount?: number;
-  apiStatus?: 'active' | 'paused';
+  apiStatus?: "active" | "paused";
   children: ReactNode;
   actions?: ReactNode;
 }
 
 const navItems = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { to: '/tests', label: 'Tests', icon: FlaskConical },
-  { to: '/samples', label: 'Samples', icon: FileAudio },
-  { to: '/models', label: 'Models', icon: Bot },
-  { to: '/reports', label: 'Evaluation Reports', icon: BarChart3 },
-  { to: '/settings', label: 'System Settings', icon: Settings },
+  { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/tests", label: "Tests", icon: FlaskConical },
+  { to: "/samples", label: "Samples", icon: FileAudio },
+  { to: "/models", label: "Models", icon: Bot },
+  { to: "/reports", label: "Reports", icon: BarChart3 },
+  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function AppShell({
@@ -39,7 +39,7 @@ export function AppShell({
   description,
   providerCount = 0,
   targetCount = 0,
-  apiStatus = 'active',
+  apiStatus = "active",
   children,
   actions,
 }: AppShellProps) {
@@ -49,7 +49,9 @@ export function AppShell({
         <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-hidden bg-[#004664] text-white lg:flex lg:flex-col">
           <Link to="/" className="flex items-center gap-3 px-8 py-8">
             <BrandMark />
-            <span className="text-xl font-semibold tracking-normal">Ornitho ASR</span>
+            <span className="text-xl font-semibold tracking-normal">
+              Ornitho ASR
+            </span>
           </Link>
 
           <nav className="space-y-2 px-5">
@@ -62,7 +64,9 @@ export function AppShell({
                   end={item.end}
                   className={({ isActive }) =>
                     `flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-semibold transition ${
-                      isActive ? 'bg-slate-950/25 shadow-inner' : 'text-white/90 hover:bg-white/10'
+                      isActive
+                        ? "bg-slate-950/25 shadow-inner"
+                        : "text-white/90 hover:bg-white/10"
                     }`
                   }
                 >
@@ -92,26 +96,39 @@ export function AppShell({
                   <BrandMark />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="text-2xl font-bold tracking-normal text-slate-950 lg:text-3xl">{title}</h1>
+                  <h1 className="text-2xl font-bold tracking-normal text-slate-950 lg:text-3xl">
+                    {title}
+                  </h1>
                   <p className="mt-1 text-sm text-slate-600">{description}</p>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center justify-start gap-3 lg:justify-end">
-                <HeaderPill tone={apiStatus === 'active' ? 'emerald' : 'amber'} icon={<ShieldCheck className="h-4 w-4" />}>
-                  API {apiStatus === 'active' ? 'Active' : 'Paused'}
+                <HeaderPill
+                  tone={apiStatus === "active" ? "emerald" : "amber"}
+                  icon={<ShieldCheck className="h-4 w-4" />}
+                >
+                  API {apiStatus === "active" ? "Active" : "Paused"}
                 </HeaderPill>
                 <HeaderPill tone="amber" icon={<Gauge className="h-4 w-4" />}>
-                  {providerCount} Provider{providerCount === 1 ? '' : 's'} Ready
+                  {providerCount} Provider{providerCount === 1 ? "" : "s"} Ready
                 </HeaderPill>
                 <HeaderPill tone="violet" icon={<Target className="h-4 w-4" />}>
-                  {targetCount} Test Target{targetCount === 1 ? '' : 's'}
+                  {targetCount} Test Target{targetCount === 1 ? "" : "s"}
                 </HeaderPill>
                 {actions}
-                <Link to="/settings" className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100" aria-label="Help">
+                <Link
+                  to="/settings"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100"
+                  aria-label="Help"
+                >
                   <HelpCircle className="h-5 w-5" />
                 </Link>
-                <Link to="/settings" className="grid h-10 w-10 place-items-center rounded-full text-slate-700 hover:bg-slate-100" aria-label="Settings">
+                <Link
+                  to="/settings"
+                  className="grid h-10 w-10 place-items-center rounded-full text-slate-700 hover:bg-slate-100"
+                  aria-label="Settings"
+                >
                   <Settings className="h-5 w-5" />
                 </Link>
               </div>
@@ -127,7 +144,9 @@ export function AppShell({
                     end={item.end}
                     className={({ isActive }) =>
                       `inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold ${
-                        isActive ? 'bg-teal-700 text-white' : 'border border-slate-200 text-slate-700'
+                        isActive
+                          ? "bg-teal-700 text-white"
+                          : "border border-slate-200 text-slate-700"
                       }`
                     }
                   >
@@ -148,47 +167,89 @@ export function AppShell({
 
 function BrandMark() {
   return (
-    <img src={logoAsset} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover shadow-lg" />
+    <img
+      src={logoAsset}
+      alt=""
+      className="h-16 w-16 shrink-0 rounded-lg object-cover shadow-lg"
+    />
   );
 }
 
-function HeaderPill({ tone, icon, children }: { tone: 'emerald' | 'amber' | 'violet'; icon: ReactNode; children: ReactNode }) {
+function HeaderPill({
+  tone,
+  icon,
+  children,
+}: {
+  tone: "emerald" | "amber" | "violet";
+  icon: ReactNode;
+  children: ReactNode;
+}) {
   const tones = {
-    emerald: 'border-emerald-200 bg-emerald-50 text-emerald-800',
-    amber: 'border-amber-200 bg-amber-50 text-amber-800',
-    violet: 'border-violet-200 bg-violet-50 text-violet-800',
+    emerald: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    amber: "border-amber-200 bg-amber-50 text-amber-800",
+    violet: "border-violet-200 bg-violet-50 text-violet-800",
   };
 
   return (
-    <span className={`inline-flex h-10 items-center gap-2 rounded-lg border px-3 text-sm font-semibold ${tones[tone]}`}>
+    <span
+      className={`inline-flex h-10 items-center gap-2 rounded-lg border px-3 text-sm font-semibold ${tones[tone]}`}
+    >
       {icon}
       {children}
     </span>
   );
 }
 
-export function ShellCard({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function ShellCard({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <section className={`rounded-lg border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)] ${className}`}>
+    <section
+      className={`rounded-lg border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)] ${className}`}
+    >
       {children}
     </section>
   );
 }
 
-export function SectionTitle({ title, description }: { title: string; description?: string }) {
+export function SectionTitle({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
   return (
     <div className="flex flex-wrap items-end gap-3">
-      <h2 className="text-xl font-bold tracking-normal text-slate-950">{title}</h2>
-      {description && <p className="pb-0.5 text-sm text-slate-500">{description}</p>}
+      <h2 className="text-xl font-bold tracking-normal text-slate-950">
+        {title}
+      </h2>
+      {description && (
+        <p className="pb-0.5 text-sm text-slate-500">{description}</p>
+      )}
     </div>
   );
 }
 
-export function EmptyPlaceholderScreen({ title, description, icon }: { title: string; description: string; icon: ReactNode }) {
+export function EmptyPlaceholderScreen({
+  title,
+  description,
+  icon,
+}: {
+  title: string;
+  description: string;
+  icon: ReactNode;
+}) {
   return (
     <ShellCard className="grid min-h-[360px] place-items-center p-8 text-center">
       <div className="max-w-md">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal-50 text-teal-700">{icon}</div>
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal-50 text-teal-700">
+          {icon}
+        </div>
         <h2 className="mt-5 text-xl font-bold">{title}</h2>
         <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
       </div>
@@ -197,5 +258,9 @@ export function EmptyPlaceholderScreen({ title, description, icon }: { title: st
 }
 
 export function StatusDot({ active }: { active: boolean }) {
-  return <span className={`h-2.5 w-2.5 rounded-full ${active ? 'bg-lime-500' : 'bg-amber-500'}`} />;
+  return (
+    <span
+      className={`h-2.5 w-2.5 rounded-full ${active ? "bg-lime-500" : "bg-amber-500"}`}
+    />
+  );
 }
