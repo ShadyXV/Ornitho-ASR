@@ -1,7 +1,7 @@
 # Ornitho ASR
 
 Ornitho ASR is a local benchmark app for testing speech-to-text providers on
-bird names.
+bird names. The is still work in progress...
 
 The app records or uploads audio, runs the same clip through selected providers
 and methods, scores the output, and lets you add a manual grade.
