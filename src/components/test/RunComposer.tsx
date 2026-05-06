@@ -100,6 +100,7 @@ export function RunComposer(props: RunComposerProps) {
             <option value="regression">Regression</option>
             <option value="full">Full</option>
             <option value="provider">Provider</option>
+            <option value="sample">Sample comparison</option>
           </select>
         </label>
 

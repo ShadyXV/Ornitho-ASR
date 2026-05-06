@@ -3,6 +3,7 @@ import { Activity, FileAudio, Mic, Save, Square, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AppShell, ShellCard } from '../components/layout/AppShell';
 import { SampleEditor } from '../components/samples/SampleEditor';
+import audioWaveBanner from '../assets/ornitho/audio-wave-banner.png';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { fetchJson } from '../lib/api';
 import { defaultTranscriptTarget } from '../lib/samples';
@@ -119,62 +120,79 @@ export function NewSampleScreen() {
 
   return (
     <AppShell title="Record a sample" description="Create reusable audio and transcript data for comparison tests." providerCount={availableCount} targetCount={target ? 1 : 0} apiStatus={message ? 'paused' : 'active'}>
-      <div className="grid gap-6 lg:grid-cols-[420px_minmax(0,1fr)]">
-        <section className="space-y-5">
-          {message && <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700">{message}</div>}
+      <div className="space-y-6">
+        <ShellCard className="overflow-hidden">
+          <div className="grid gap-4 p-4 pb-0 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center">
+            <div className="grid h-16 w-16 self-center place-items-center rounded-lg bg-teal-50 text-teal-700">
+              <FileAudio className="h-8 w-8" />
+            </div>
+            <div className="self-center pb-4 lg:pb-0">
+              <h2 className="text-xl font-bold">Capture a reusable benchmark sample</h2>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">
+                Record or upload audio, generate an optional transcript, then save it for repeatable provider comparisons.
+              </p>
+            </div>
+            <img src={audioWaveBanner} alt="" className="hidden h-24 w-[520px] self-end object-contain object-bottom md:block" />
+          </div>
+        </ShellCard>
 
-          <ShellCard className="p-5">
-            <h2 className="text-lg font-bold">Audio</h2>
-            <p className="mt-1 text-sm text-slate-600">Default transcript target: {targetLabel}</p>
+        <div className="grid gap-6 lg:grid-cols-[420px_minmax(0,1fr)]">
+          <section className="space-y-5">
+            {message && <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700">{message}</div>}
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <button
-                onClick={recorder.isRecording ? recorder.stopRecording : recorder.startRecording}
-                className={`inline-flex items-center justify-center gap-2 rounded-md px-3 py-3 text-sm font-bold text-white ${recorder.isRecording ? 'bg-red-600 hover:bg-red-700' : 'bg-teal-700 hover:bg-teal-800'}`}
-              >
-                {recorder.isRecording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                {recorder.isRecording ? 'Stop recording' : 'Record audio'}
+            <ShellCard className="p-5">
+              <h2 className="text-lg font-bold">Audio</h2>
+              <p className="mt-1 text-sm text-slate-600">Default transcript target: {targetLabel}</p>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <button
+                  onClick={recorder.isRecording ? recorder.stopRecording : recorder.startRecording}
+                  className={`inline-flex items-center justify-center gap-2 rounded-md px-3 py-3 text-sm font-bold text-white ${recorder.isRecording ? 'bg-red-600 hover:bg-red-700' : 'bg-teal-700 hover:bg-teal-800'}`}
+                >
+                  {recorder.isRecording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  {recorder.isRecording ? 'Stop recording' : 'Record audio'}
+                </button>
+                <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-slate-300 px-3 py-3 text-sm font-bold hover:bg-slate-50">
+                  <Upload className="h-4 w-4" />
+                  Upload audio
+                  <input type="file" accept="audio/*" className="hidden" onChange={(event) => setUploadedFile(event.target.files?.[0] || null)} />
+                </label>
+              </div>
+
+              <div className="mt-3 flex items-center gap-2 rounded-md bg-slate-100 px-3 py-2 text-sm text-slate-700">
+                <FileAudio className="h-4 w-4" />
+                {uploadedFile?.name || (recorder.audioBlob ? 'Recorded audio ready' : 'No audio selected')}
+              </div>
+              {recorder.error && <p className="mt-2 text-sm text-red-700">{recorder.error}</p>}
+
+              <button onClick={() => void generateTranscript()} disabled={isTranscribing || !audioSource} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-teal-700 px-3 py-3 text-sm font-bold text-white hover:bg-teal-800 disabled:bg-slate-300">
+                {isTranscribing ? <Activity className="h-4 w-4 animate-spin" /> : <FileAudio className="h-4 w-4" />}
+                Generate transcript
               </button>
-              <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-slate-300 px-3 py-3 text-sm font-bold hover:bg-slate-50">
-                <Upload className="h-4 w-4" />
-                Upload audio
-                <input type="file" accept="audio/*" className="hidden" onChange={(event) => setUploadedFile(event.target.files?.[0] || null)} />
-              </label>
-            </div>
+            </ShellCard>
 
-            <div className="mt-3 flex items-center gap-2 rounded-md bg-slate-100 px-3 py-2 text-sm text-slate-700">
-              <FileAudio className="h-4 w-4" />
-              {uploadedFile?.name || (recorder.audioBlob ? 'Recorded audio ready' : 'No audio selected')}
-            </div>
-            {recorder.error && <p className="mt-2 text-sm text-red-700">{recorder.error}</p>}
-
-            <button onClick={() => void generateTranscript()} disabled={isTranscribing || !audioSource} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-teal-700 px-3 py-3 text-sm font-bold text-white hover:bg-teal-800 disabled:bg-slate-300">
-              {isTranscribing ? <Activity className="h-4 w-4 animate-spin" /> : <FileAudio className="h-4 w-4" />}
-              Generate transcript
+            <button onClick={() => void saveSample()} disabled={isSaving || !audioSource} className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-slate-950 px-3 py-3 text-sm font-bold text-white hover:bg-slate-800 disabled:bg-slate-300">
+              {isSaving ? <Activity className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save sample
             </button>
-          </ShellCard>
+          </section>
 
-          <button onClick={() => void saveSample()} disabled={isSaving || !audioSource} className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-slate-950 px-3 py-3 text-sm font-bold text-white hover:bg-slate-800 disabled:bg-slate-300">
-            {isSaving ? <Activity className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            Save sample
-          </button>
-        </section>
-
-        <SampleEditor
-          transcript={transcript}
-          onTranscriptChange={(value) => {
-            setTranscript(value);
-            if (transcriptStatus === 'generated') {
-              setTranscriptStatus('edited');
-            }
-          }}
-          birdTerms={birdTerms}
-          onBirdTermsChange={setBirdTerms}
-          notes={notes}
-          onNotesChange={setNotes}
-          tags={tags}
-          onTagsChange={setTags}
-        />
+          <SampleEditor
+            transcript={transcript}
+            onTranscriptChange={(value) => {
+              setTranscript(value);
+              if (transcriptStatus === 'generated') {
+                setTranscriptStatus('edited');
+              }
+            }}
+            birdTerms={birdTerms}
+            onBirdTermsChange={setBirdTerms}
+            notes={notes}
+            onNotesChange={setNotes}
+            tags={tags}
+            onTagsChange={setTags}
+          />
+        </div>
       </div>
     </AppShell>
   );

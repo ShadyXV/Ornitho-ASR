@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import {
   BarChart3,
   Bot,
+  FileAudio,
   FlaskConical,
   Gauge,
   HelpCircle,
@@ -27,6 +28,7 @@ interface AppShellProps {
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/tests', label: 'Tests', icon: FlaskConical },
+  { to: '/samples', label: 'Samples', icon: FileAudio },
   { to: '/models', label: 'Models', icon: Bot },
   { to: '/reports', label: 'Evaluation Reports', icon: BarChart3 },
   { to: '/settings', label: 'System Settings', icon: Settings },
