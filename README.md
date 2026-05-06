@@ -6,6 +6,8 @@ bird names. The is still work in progress...
 The app records or uploads audio, runs the same clip through selected providers
 and methods, scores the output, and lets you add a manual grade.
 
+<img width="3564" height="2070" alt="Screenshot 2026-05-06 at 12 02 22" src="https://github.com/user-attachments/assets/7e7bad05-d66b-4006-a1a1-24981f0477cd" />
+
 ## What it does
 
 - Shows which providers are available from local keys.
