@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BarChart3, FileAudio, Play } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { BarChart3, EyeOff, FileAudio, Mic, MoreVertical, Plus, Upload, Waves } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { AppShell, SectionTitle, ShellCard, StatusDot } from '../components/layout/AppShell';
 import { ProviderKeyModal } from '../components/dashboard/ProviderKeyModal';
-import { ProviderKeysSection } from '../components/dashboard/ProviderKeysSection';
 import { RecentResultsSummary } from '../components/dashboard/RecentResultsSummary';
-import { SampleList } from '../components/samples/SampleList';
 import { envKeys, type EnvKey } from '../constants/providerKeys';
 import { dummyRecentRuns } from '../data/dummyRecentRuns';
 import { fetchJson } from '../lib/api';
@@ -48,7 +48,7 @@ export function DashboardScreen() {
 
     void loadSamples().catch(() => {
       if (!ignore) {
-        setSamplesMessage('Samples are unavailable. Restart the API server to enable the sample library.');
+        setSamplesMessage('Start the local API server to unlock sample tools.');
       }
     });
 
@@ -72,60 +72,100 @@ export function DashboardScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm font-medium text-emerald-700">Ornitho ASR</p>
-            <h1 className="text-2xl font-semibold tracking-normal">Dashboard</h1>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-600">
-            <span>{availableProviders.length} provider{availableProviders.length === 1 ? '' : 's'} ready</span>
-            <span>{totalTargets} test target{totalTargets === 1 ? '' : 's'}</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl space-y-6 px-5 py-6">
+    <AppShell
+      title="Dashboard"
+      description="Evaluate and compare ASR providers with confidence."
+      providerCount={availableProviders.length}
+      targetCount={totalTargets}
+      apiStatus={message ? 'paused' : 'active'}
+    >
+      <div className="space-y-6">
         {message && (
-          <div className="rounded-md border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900">
             {message}
           </div>
         )}
 
-        <section className="rounded-lg border border-zinc-200 bg-white p-5">
-          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-            <div>
-              <h2 className="text-xl font-semibold">Start a test</h2>
-              <p className="text-sm text-zinc-600">Launch a benchmark directly, or start from a saved sample below.</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-700 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-800">
-                <FileAudio className="h-4 w-4" />
-                Record a sample
-              </Link>
-              <Link to="/test/blind" className="inline-flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-100">
-                <Play className="h-4 w-4" />
-                Blind test
-              </Link>
-              <Link to="/test/full" className="inline-flex items-center justify-center gap-2 rounded-md bg-zinc-900 px-3 py-2 text-sm font-medium text-white hover:bg-zinc-800">
-                <BarChart3 className="h-4 w-4" />
-                Full test
-              </Link>
-            </div>
+        <section className="space-y-3">
+          <SectionTitle title="Start a new test" description="Three simple steps to powerful insights." />
+          <div className="grid gap-4 xl:grid-cols-3">
+            <StartActionCard
+              icon={<Mic className="h-9 w-9" />}
+              tone="coral"
+              title="Record Samples"
+              description="Capture new audio or upload files to build your library."
+              primary={<Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md bg-[#ff4e4e] px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#eb3e3e]"><Mic className="h-4 w-4" /> Record Samples</Link>}
+              secondary={<Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"><Upload className="h-4 w-4" /> Upload Audio</Link>}
+            />
+            <StartActionCard
+              icon={<EyeOff className="h-9 w-9" />}
+              tone="blue"
+              title="Configure Blind Test"
+              description="Hide reference text and sample set to run a fair comparison."
+              primary={<Link to="/test/blind" className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-700">Configure Blind Test</Link>}
+            />
+            <StartActionCard
+              icon={<BarChart3 className="h-9 w-9" />}
+              tone="green"
+              title="Run Full Evaluation"
+              description="Launch a full evaluation and compare provider performance."
+              primary={<Link to="/test/full" className="inline-flex items-center justify-center gap-2 rounded-md bg-teal-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-700">Run Full Evaluation</Link>}
+            />
           </div>
-
         </section>
 
-        <ProviderKeysSection providers={providers} onConfigureProvider={setKeyProvider} />
-        {samplesMessage && (
-          <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            {samplesMessage}
+        <section className="space-y-3">
+          <SectionTitle title="ASR Provider Integrations" description="Manage your provider connections." />
+          <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+            {providers.map((provider) => (
+              <ProviderIntegrationCard key={provider.id} provider={provider} onConfigure={() => setKeyProvider(provider)} />
+            ))}
+            <button className="grid min-h-[160px] place-items-center rounded-lg border border-dashed border-slate-300 bg-white p-5 text-center hover:border-teal-400 hover:bg-teal-50">
+              <span>
+                <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-teal-100 text-teal-700">
+                  <Plus className="h-7 w-7" />
+                </span>
+                <span className="mt-4 block font-bold text-teal-700">Add Integration</span>
+                <span className="mt-1 block text-sm text-slate-500">Connect another ASR provider</span>
+              </span>
+            </button>
           </div>
+        </section>
+
+        {samplesMessage && (
+          <ShellCard className="overflow-hidden border-amber-300 bg-amber-50">
+            <div className="grid gap-4 p-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
+              <div className="grid h-12 w-12 place-items-center rounded-lg bg-amber-100 text-amber-700">
+                <FileAudio className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-orange-700">Sample library paused</h3>
+                <p className="mt-1 text-sm text-slate-700">{samplesMessage}</p>
+              </div>
+              <div className="flex items-center gap-6">
+                <Waves className="hidden h-12 w-32 text-sky-400 md:block" />
+                <Link to="/samples/new" className="inline-flex items-center justify-center rounded-md bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-800">
+                  Add your first sample
+                </Link>
+              </div>
+            </div>
+          </ShellCard>
         )}
-        <SampleList samples={samples} />
+
+        {!samplesMessage && samples.length > 0 && (
+          <ShellCard className="p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 className="font-bold">Sample library ready</h3>
+                <p className="text-sm text-slate-600">{samples.length} saved sample{samples.length === 1 ? '' : 's'} available for comparison tests.</p>
+              </div>
+              <Link to="/samples/new" className="rounded-md bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800">Add sample</Link>
+            </div>
+          </ShellCard>
+        )}
+
         <RecentResultsSummary runs={dummyRecentRuns} />
-      </main>
+      </div>
 
       <ProviderKeyModal
         provider={keyProvider}
@@ -134,6 +174,78 @@ export function DashboardScreen() {
         onClose={() => setKeyProvider(null)}
         onSave={() => void saveSessionKeys()}
       />
-    </div>
+    </AppShell>
   );
+}
+
+function StartActionCard({
+  icon,
+  tone,
+  title,
+  description,
+  primary,
+  secondary,
+}: {
+  icon: ReactNode;
+  tone: 'coral' | 'blue' | 'green';
+  title: string;
+  description: string;
+  primary: ReactNode;
+  secondary?: ReactNode;
+}) {
+  const tones = {
+    coral: 'bg-red-50 text-red-500',
+    blue: 'bg-blue-50 text-blue-600',
+    green: 'bg-teal-50 text-teal-700',
+  };
+
+  return (
+    <ShellCard className="relative overflow-hidden p-4">
+      <div className="flex gap-4">
+        <div className={`grid h-18 w-18 shrink-0 place-items-center rounded-full ${tones[tone]}`}>{icon}</div>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-bold text-slate-950">{title}</h3>
+          <p className="mt-2 min-h-11 text-sm leading-6 text-slate-600">{description}</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+            {primary}
+            {secondary}
+          </div>
+        </div>
+      </div>
+      <div className="absolute right-4 top-6 flex h-16 items-center gap-1 opacity-60">
+        {[22, 38, 16, 48, 26].map((height, index) => (
+          <span key={index} className={`w-0.5 rounded-full ${tone === 'green' ? 'bg-amber-400' : 'bg-sky-500'}`} style={{ height }} />
+        ))}
+      </div>
+    </ShellCard>
+  );
+}
+
+function ProviderIntegrationCard({ provider, onConfigure }: { provider: ProviderInfo; onConfigure: () => void }) {
+  const isGoogle = provider.id.includes('google');
+
+  return (
+    <ShellCard className="p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-4">
+          <ProviderLogo id={provider.id} name={provider.name} />
+          <h3 className="truncate font-bold text-slate-950">{provider.name}</h3>
+        </div>
+        <MoreVertical className="h-5 w-5 text-slate-500" />
+      </div>
+      <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
+        <StatusDot active={provider.available} />
+        {provider.available ? `${providerTargetCount(provider)} targets ready` : `Missing ${isGoogle ? 'JSON credentials' : 'API key'}`}
+      </div>
+      <button onClick={onConfigure} className="mt-4 inline-flex w-full items-center justify-center rounded-md border border-teal-700 px-3 py-3 text-sm font-bold text-teal-700 hover:bg-teal-50">
+        {provider.available ? 'Update Credentials' : isGoogle ? 'Upload Credentials' : 'Configure Key'}
+      </button>
+    </ShellCard>
+  );
+}
+
+function ProviderLogo({ id, name }: { id: string; name: string }) {
+  const initial = name.slice(0, 1).toUpperCase();
+  const color = id.includes('openai') ? 'bg-slate-950 text-white' : id.includes('deepgram') ? 'bg-red-500 text-white' : 'bg-white text-blue-600 border border-slate-200';
+  return <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg text-2xl font-black ${color}`}>{initial}</span>;
 }

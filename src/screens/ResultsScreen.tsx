@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, SlidersHorizontal } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { SlidersHorizontal } from 'lucide-react';
+import { AppShell, SectionTitle, ShellCard } from '../components/layout/AppShell';
 import { dummyRecentRuns } from '../data/dummyRecentRuns';
 import { formatDate, formatPercent } from '../lib/formatters';
 import { flattenRunResults, sortResultRows, uniqueResultValues, type ResultSortKey } from '../lib/results';
@@ -43,42 +43,28 @@ export function ResultsScreen() {
   }, [dateFilter, modelFilter, now, providerFilter, rows, sortKey, statusFilter]);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm font-medium text-emerald-700">Ornitho ASR</p>
-            <h1 className="text-2xl font-semibold">Results</h1>
-            <p className="mt-1 text-sm text-zinc-600">Sort and filter benchmark outcomes by provider, model, date, status, and metrics.</p>
-          </div>
-          <Link to="/" className="inline-flex items-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-100">
-            <ArrowLeft className="h-4 w-4" />
-            Dashboard
-          </Link>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl space-y-5 px-5 py-6">
-        <section className="rounded-lg border border-zinc-200 bg-white p-4">
+    <AppShell title="Evaluation Reports" description="Sort and filter benchmark outcomes by provider, model, date, status, and metrics." providerCount={3} targetCount={rows.length}>
+      <div className="space-y-6">
+        <ShellCard className="p-4">
           <div className="mb-4 flex items-center gap-2">
-            <SlidersHorizontal className="h-4 w-4 text-emerald-700" />
-            <h2 className="font-semibold">Filters</h2>
+            <SlidersHorizontal className="h-4 w-4 text-teal-700" />
+            <h2 className="font-bold">Filters</h2>
           </div>
           <div className="grid gap-3 md:grid-cols-5">
             <Select label="Provider" value={providerFilter} onChange={setProviderFilter} options={providers} />
             <Select label="Model" value={modelFilter} onChange={setModelFilter} options={models} />
             <Select label="Status" value={statusFilter} onChange={setStatusFilter} options={statuses} />
             <label className="block">
-              <span className="mb-1 block text-xs font-medium text-zinc-600">Date</span>
-              <select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+              <span className="mb-1 block text-xs font-semibold text-slate-600">Date</span>
+              <select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm">
                 <option value="all">All dates</option>
                 <option value="24h">Last 24 hours</option>
                 <option value="7d">Last 7 days</option>
               </select>
             </label>
             <label className="block">
-              <span className="mb-1 block text-xs font-medium text-zinc-600">Sort by</span>
-              <select value={sortKey} onChange={(event) => setSortKey(event.target.value as ResultSortKey)} className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+              <span className="mb-1 block text-xs font-semibold text-slate-600">Sort by</span>
+              <select value={sortKey} onChange={(event) => setSortKey(event.target.value as ResultSortKey)} className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm">
                 <option value="date">Newest</option>
                 <option value="provider">Provider</option>
                 <option value="model">Model</option>
@@ -89,48 +75,58 @@ export function ResultsScreen() {
               </select>
             </label>
           </div>
-        </section>
+        </ShellCard>
 
-        <section className="rounded-lg border border-zinc-200 bg-white">
-          <div className="grid border-b border-zinc-200 px-4 py-3 text-xs font-semibold uppercase text-zinc-500 md:grid-cols-[1fr_140px_140px_90px_90px_90px_90px]">
-            <span>Run / provider</span>
-            <span>Model</span>
-            <span>Method</span>
-            <span>Status</span>
-            <span>WER</span>
-            <span>Recall</span>
-            <span>Latency</span>
+        <section className="space-y-3">
+          <SectionTitle title="Evaluation Results" description={`${filteredRows.length} rows shown`} />
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
+            <table className="min-w-[1040px] w-full border-collapse text-left text-sm">
+              <thead className="bg-slate-50 text-xs font-semibold uppercase text-slate-500">
+                <tr>
+                  <th className="px-4 py-3">Run / Provider</th>
+                  <th className="px-4 py-3">Model</th>
+                  <th className="px-4 py-3">Method</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">WER</th>
+                  <th className="px-4 py-3">Recall</th>
+                  <th className="px-4 py-3">Precision</th>
+                  <th className="px-4 py-3">Latency</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredRows.map(({ run, result }) => (
+                  <tr key={result.id}>
+                    <td className="px-4 py-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-bold text-slate-950">{result.providerName}</span>
+                        <span className="rounded bg-slate-100 px-2 py-1 text-xs font-bold uppercase text-slate-700">{run.mode}</span>
+                      </div>
+                      <p className="mt-1 text-xs text-slate-500">{formatDate(run.createdAt)} · {run.testCase?.notes || 'Untitled run'}</p>
+                    </td>
+                    <td className="px-4 py-4 text-slate-700">{result.modelId}</td>
+                    <td className="px-4 py-4 text-slate-700">{result.methodName}</td>
+                    <td className="px-4 py-4"><StatusBadge status={result.status} /></td>
+                    <td className="px-4 py-4 font-bold">{formatPercent(result.scores?.wordErrorRate ?? null)}</td>
+                    <td className="px-4 py-4 font-bold">{formatPercent(result.scores?.birdRecall ?? null)}</td>
+                    <td className="px-4 py-4 font-bold">{formatPercent(result.scores?.birdPrecision ?? null)}</td>
+                    <td className="px-4 py-4 font-bold">{result.latencyMs}ms</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {filteredRows.length === 0 && <div className="p-6 text-sm text-slate-500">No results match these filters.</div>}
           </div>
-          {filteredRows.map(({ run, result }) => (
-            <article key={result.id} className="grid gap-3 border-b border-zinc-100 px-4 py-4 last:border-b-0 md:grid-cols-[1fr_140px_140px_90px_90px_90px_90px] md:items-start">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-semibold">{result.providerName}</span>
-                  <span className="rounded bg-zinc-100 px-2 py-1 text-xs uppercase text-zinc-700">{run.mode}</span>
-                </div>
-                <p className="mt-1 text-xs text-zinc-500">{formatDate(run.createdAt)} · {run.testCase?.notes || 'Untitled run'}</p>
-                <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-700">{result.error || result.transcript || 'No transcript.'}</p>
-              </div>
-              <span className="text-sm">{result.modelId}</span>
-              <span className="text-sm">{result.methodName}</span>
-              <span className={`w-fit rounded px-2 py-1 text-xs ${result.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : result.status === 'error' ? 'bg-red-100 text-red-800' : 'bg-zinc-100 text-zinc-700'}`}>{result.status}</span>
-              <Metric value={formatPercent(result.scores?.wordErrorRate ?? null)} />
-              <Metric value={formatPercent(result.scores?.birdRecall ?? null)} />
-              <Metric value={`${result.latencyMs}ms`} />
-            </article>
-          ))}
-          {filteredRows.length === 0 && <div className="p-6 text-sm text-zinc-500">No results match these filters.</div>}
         </section>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }
 
 function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: string[] }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium text-zinc-600">{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+      <span className="mb-1 block text-xs font-semibold text-slate-600">{label}</span>
+      <select value={value} onChange={(event) => onChange(event.target.value)} className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm">
         <option value="all">All {label.toLowerCase()}</option>
         {options.map((option) => <option key={option} value={option}>{option}</option>)}
       </select>
@@ -138,6 +134,7 @@ function Select({ label, value, onChange, options }: { label: string; value: str
   );
 }
 
-function Metric({ value }: { value: string }) {
-  return <span className="text-sm font-semibold">{value}</span>;
+function StatusBadge({ status }: { status: string }) {
+  const tone = status === 'completed' ? 'bg-emerald-100 text-emerald-800' : status === 'error' ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-700';
+  return <span className={`w-fit rounded-md px-2.5 py-1 text-xs font-bold ${tone}`}>{status}</span>;
 }

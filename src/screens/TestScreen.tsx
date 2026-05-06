@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Download } from 'lucide-react';
 import { useLocation, useParams } from 'react-router-dom';
+import { AppShell } from '../components/layout/AppShell';
 import { ProviderSetup } from '../components/test/ProviderSetup';
 import { ResultsPanel } from '../components/test/ResultsPanel';
 import { RunComposer } from '../components/test/RunComposer';
-import { TestHeader } from '../components/test/TestHeader';
 import type { EnvKey } from '../constants/providerKeys';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 import { fetchJson } from '../lib/api';
@@ -176,16 +177,27 @@ export function TestScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950">
-      <TestHeader
+    <AppShell
         title={testTitle}
         description={testDescription}
-        availableProviderCount={availableCount}
-        onExportJson={() => exportFile('ornitho-asr-runs.json', JSON.stringify(runs, null, 2), 'application/json')}
-        onExportCsv={() => exportFile('ornitho-asr-runs.csv', runsToCsv(runs), 'text/csv')}
-      />
+        providerCount={availableCount}
+        targetCount={selectedTargets.length}
+        apiStatus={message ? 'paused' : 'active'}
+        actions={(
+          <>
+            <button onClick={() => exportFile('ornitho-asr-runs.json', JSON.stringify(runs, null, 2), 'application/json')} className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold hover:bg-slate-50">
+              <Download className="h-4 w-4" />
+              JSON
+            </button>
+            <button onClick={() => exportFile('ornitho-asr-runs.csv', runsToCsv(runs), 'text/csv')} className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold hover:bg-slate-50">
+              <Download className="h-4 w-4" />
+              CSV
+            </button>
+          </>
+        )}
+      >
 
-      <main className="mx-auto grid max-w-7xl gap-6 px-5 py-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+      <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
         <section className="space-y-5">
           <ProviderSetup
             providers={providers}
@@ -239,7 +251,7 @@ export function TestScreen() {
             onResultUpdated={updateResult}
           />
         </section>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }
