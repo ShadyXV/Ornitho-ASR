@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { BarChart3, EyeOff, FileAudio, Mic, MoreVertical, Plus, Upload, Waves } from 'lucide-react';
+import { BarChart3, EyeOff, FileAudio, Mic, MoreVertical, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AppShell, SectionTitle, ShellCard, StatusDot } from '../components/layout/AppShell';
 import { ProviderKeyModal } from '../components/dashboard/ProviderKeyModal';
 import { RecentResultsSummary } from '../components/dashboard/RecentResultsSummary';
+import audioWaveBanner from '../assets/ornitho/audio-wave-banner.png';
+import dashboardSparkles from '../assets/ornitho/dashboard-sparkles.png';
+import uploadAsset from '../assets/ornitho/upload.png';
 import { envKeys, type EnvKey } from '../constants/providerKeys';
 import { dummyRecentRuns } from '../data/dummyRecentRuns';
 import { fetchJson } from '../lib/api';
@@ -95,7 +98,7 @@ export function DashboardScreen() {
               title="Record Samples"
               description="Capture new audio or upload files to build your library."
               primary={<Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md bg-[#ff4e4e] px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#eb3e3e]"><Mic className="h-4 w-4" /> Record Samples</Link>}
-              secondary={<Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"><Upload className="h-4 w-4" /> Upload Audio</Link>}
+              secondary={<Link to="/samples/new" className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"><img src={uploadAsset} alt="" className="h-5 w-5 object-contain" /> Upload Audio</Link>}
             />
             <StartActionCard
               icon={<EyeOff className="h-9 w-9" />}
@@ -103,6 +106,7 @@ export function DashboardScreen() {
               title="Configure Blind Test"
               description="Hide reference text and sample set to run a fair comparison."
               primary={<Link to="/test/blind" className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-700">Configure Blind Test</Link>}
+              backgroundImage={dashboardSparkles}
             />
             <StartActionCard
               icon={<BarChart3 className="h-9 w-9" />}
@@ -110,6 +114,7 @@ export function DashboardScreen() {
               title="Run Full Evaluation"
               description="Launch a full evaluation and compare provider performance."
               primary={<Link to="/test/full" className="inline-flex items-center justify-center gap-2 rounded-md bg-teal-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-700">Run Full Evaluation</Link>}
+              backgroundImage={dashboardSparkles}
             />
           </div>
         </section>
@@ -134,17 +139,17 @@ export function DashboardScreen() {
 
         {samplesMessage && (
           <ShellCard className="overflow-hidden border-amber-300 bg-amber-50">
-            <div className="grid gap-4 p-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
-              <div className="grid h-12 w-12 place-items-center rounded-lg bg-amber-100 text-amber-700">
-                <FileAudio className="h-6 w-6" />
+            <div className="grid min-h-28 gap-4 p-4 pb-0 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
+              <div className="grid h-16 w-16 self-center place-items-center rounded-lg bg-amber-100 text-amber-700">
+                <FileAudio className="h-8 w-8" />
               </div>
-              <div>
+              <div className="self-center pb-4 md:pb-0">
                 <h3 className="font-bold text-orange-700">Sample library paused</h3>
                 <p className="mt-1 text-sm text-slate-700">{samplesMessage}</p>
               </div>
-              <div className="flex items-center gap-6">
-                <Waves className="hidden h-12 w-32 text-sky-400 md:block" />
-                <Link to="/samples/new" className="inline-flex items-center justify-center rounded-md bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-800">
+              <div className="flex items-end gap-6 self-end">
+                <img src={audioWaveBanner} alt="" className="hidden h-24 w-[520px] object-contain object-bottom md:block" />
+                <Link to="/samples/new" className="mb-5 inline-flex items-center justify-center rounded-md bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-teal-800">
                   Add your first sample
                 </Link>
               </div>
@@ -185,6 +190,7 @@ function StartActionCard({
   description,
   primary,
   secondary,
+  backgroundImage,
 }: {
   icon: ReactNode;
   tone: 'coral' | 'blue' | 'green';
@@ -192,6 +198,7 @@ function StartActionCard({
   description: string;
   primary: ReactNode;
   secondary?: ReactNode;
+  backgroundImage?: string;
 }) {
   const tones = {
     coral: 'bg-red-50 text-red-500',
@@ -201,7 +208,14 @@ function StartActionCard({
 
   return (
     <ShellCard className="relative overflow-hidden p-4">
-      <div className="flex gap-4">
+      {backgroundImage && (
+        <img
+          src={backgroundImage}
+          alt=""
+          className="pointer-events-none absolute right-0 top-1/2 z-0 h-[70%] w-1/2 -translate-y-1/2 object-contain object-right opacity-45"
+        />
+      )}
+      <div className="relative z-10 flex gap-4">
         <div className={`grid h-18 w-18 shrink-0 place-items-center rounded-full ${tones[tone]}`}>{icon}</div>
         <div className="min-w-0 flex-1">
           <h3 className="font-bold text-slate-950">{title}</h3>
@@ -211,11 +225,6 @@ function StartActionCard({
             {secondary}
           </div>
         </div>
-      </div>
-      <div className="absolute right-4 top-6 flex h-16 items-center gap-1 opacity-60">
-        {[22, 38, 16, 48, 26].map((height, index) => (
-          <span key={index} className={`w-0.5 rounded-full ${tone === 'green' ? 'bg-amber-400' : 'bg-sky-500'}`} style={{ height }} />
-        ))}
       </div>
     </ShellCard>
   );

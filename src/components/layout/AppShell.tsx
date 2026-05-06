@@ -11,6 +11,8 @@ import {
   Target,
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
+import logoAsset from '../../assets/ornitho/logo.png';
+import sidebarIllustration from '../../assets/ornitho/sidebar-illustration.png';
 
 interface AppShellProps {
   title: string;
@@ -42,7 +44,7 @@ export function AppShell({
   return (
     <div className="min-h-screen bg-[#f6f9fb] text-slate-950">
       <div className="flex min-h-screen w-full bg-white shadow-[0_0_0_1px_rgba(15,23,42,0.08)]">
-        <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-hidden bg-gradient-to-b from-[#005b69] via-[#018d95] to-[#0cbfc0] text-white lg:flex lg:flex-col">
+        <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-hidden bg-[#004664] text-white lg:flex lg:flex-col">
           <Link to="/" className="flex items-center gap-3 px-8 py-8">
             <BrandMark />
             <span className="text-xl font-semibold tracking-normal">Ornitho ASR</span>
@@ -69,21 +71,13 @@ export function AppShell({
             })}
           </nav>
 
-          <div className="mt-auto px-0 pb-0">
-            <div className="relative h-80 overflow-hidden">
-              <div className="absolute inset-x-0 bottom-0 h-44 rounded-t-[52%] bg-[#005166]/70" />
-              <div className="absolute inset-x-0 bottom-10 h-40 rounded-t-[56%] bg-[#30c6bd]/70" />
-              <div className="absolute inset-x-0 bottom-0 h-28 rounded-t-[58%] bg-[#00445d]/80" />
-              <div className="absolute bottom-[8.5rem] left-12 h-16 w-16 rounded-full bg-white/90 shadow-lg">
-                <div className="absolute left-7 top-14 h-16 w-1.5 rounded-full bg-orange-300" />
-                <div className="absolute left-3 top-8 h-8 w-10 rounded-full bg-[#43aeb6]" />
-                <div className="absolute left-11 top-6 h-2 w-3 rounded-full bg-orange-500" />
-              </div>
-              <div className="absolute right-4 bottom-24 flex h-16 items-end gap-1 opacity-80">
-                {[14, 28, 46, 64, 42, 26, 18].map((height, index) => (
-                  <span key={index} className="w-1.5 rounded-full bg-white" style={{ height }} />
-                ))}
-              </div>
+          <div className="min-h-0 flex-1 px-0 pt-8">
+            <div className="relative h-full min-h-0 overflow-hidden">
+              <img
+                src={sidebarIllustration}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-bottom"
+              />
             </div>
           </div>
         </aside>
@@ -152,13 +146,7 @@ export function AppShell({
 
 function BrandMark() {
   return (
-    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#6ee7d8] to-[#006277] shadow-lg">
-      <span className="relative block h-8 w-8 rounded-full bg-[#0f766e]">
-        <span className="absolute left-2 top-2 h-4 w-5 rounded-full bg-[#8be3db]" />
-        <span className="absolute right-0 top-3 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-orange-400" />
-        <span className="absolute right-1 top-3 h-1.5 w-1.5 rounded-full bg-slate-950" />
-      </span>
-    </div>
+    <img src={logoAsset} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover shadow-lg" />
   );
 }
 
